@@ -1,0 +1,13 @@
+{
+    "name": "bladex/myproject",
+    "description": "Bitrix Project",
+    "type": "project",
+    "require": {
+        "php": ">=7.1.0",
+        "bitrix/bitrix": "^1.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "vendor-dir": "bitrix/vendor"
+    }
+}
