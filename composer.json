@@ -4,10 +4,14 @@
     "type": "project",
     "require": {
         "php": ">=7.1.0",
-        "bitrix/bitrix": "^1.0"
+        "jenssegers/blade": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
     },
     "config": {
-        "process-timeout": 1800,
-        "vendor-dir": "bitrix/vendor"
+        "process-timeout": 1800
     }
 }
