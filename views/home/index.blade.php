@@ -27,18 +27,4 @@
         <p>Новости не найдены</p>
     @endif
 
-    {{-- Подключение компонента Bitrix --}}
-    @component('bitrix:catalog.section', [
-        'IBLOCK_TYPE' => 'catalog',
-        'IBLOCK_ID' => '2',
-        'SECTION_ID' => '1',
-        'ELEMENT_SORT_FIELD' => 'name',
-        'ELEMENT_SORT_ORDER' => 'asc'
-    ])
 @endsection
-
-@push('scripts')
-    <script>
-        console.log('Страница загружена');
-    </script>
-@endpush

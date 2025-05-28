@@ -6,7 +6,8 @@ class HomeController extends BaseController
 {
     public function indexAction()
     {
-        return $this->render('main.index', [
+        return $this->render('home.index', [
+            'siteName' => 'test',
             'news' => [],
         ]);
     }
