@@ -7,7 +7,7 @@ return function (RoutingConfigurator $routes) {
         return "/ test2";
     });
 
-    $routes->get('/my', [\App\Controllers\HomeController::class, 'index']);
+    $routes->get('/home', [App\Controllers\HomeController::class, 'index']);
 
     // Другие маршруты
     $routes->get('/about', [\App\Controllers\AboutController::class, 'index']);

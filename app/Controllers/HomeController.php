@@ -1,12 +1,13 @@
 <?php
 namespace App\Controllers;
-
 use Bitrix\Main\Engine\Controller;
-
-class HomeController extends Controller {
-
+use Bladex\BladeRenderer;
+class HomeController extends BaseController
+{
     public function indexAction()
     {
-        return 'hello';
+        return $this->render('main.index', [
+            'news' => [],
+        ]);
     }
 }
