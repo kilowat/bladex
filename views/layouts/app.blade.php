@@ -1,3 +1,6 @@
+@css('app.css')
+@js('app.js')
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -5,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', $siteName ?? 'Сайт')</title>
-    @css('app.css')
     @styles
 </head>
 
@@ -22,7 +24,7 @@
     <footer>
         <p>&copy; {{ date('Y') }} Все права защищены</p>
     </footer>
-    @js('app.js')
+
     @scripts
 </body>
 
