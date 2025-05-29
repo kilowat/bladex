@@ -4,9 +4,6 @@ class HomeController extends BaseController
 {
     public function indexAction()
     {
-        return view('home.index', [
-            'siteName' => 'test',
-            'news' => [],
-        ]);
+        return view('home.index', []);
     }
 }

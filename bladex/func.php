@@ -9,3 +9,12 @@ if (!function_exists('view')) {
         return Bladex\BladeRenderer::getInstance()->render($template, $data);
     }
 }
+
+
+if (!function_exists('route')) {
+    function route(string $name, array $params = [])
+    {
+        $router = \Bitrix\Main\Application::getInstance()->getRouter();
+        return $router->route($name, $params);
+    }
+}
