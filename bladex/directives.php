@@ -33,5 +33,6 @@ return [
     'component' => function ($expression) {
         return "<?php \$APPLICATION->IncludeComponent($expression); ?>";
     },
+    // Директива для проверки авторизации в Bitrix
 
 ];
