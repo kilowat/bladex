@@ -12,7 +12,7 @@ class HomeController extends BaseController
     {
         return [];
     }
-    public function indexAction(DataBaseService $service)
+    public function indexAction()
     {
         var_dump($this->data);
         die();
