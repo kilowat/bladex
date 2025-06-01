@@ -8,10 +8,7 @@ class HomeController extends BaseController
     #[Inject]
     protected DataBaseService $data;
 
-    protected function getDefaultPreFilters(): array
-    {
-        return [];
-    }
+
     public function indexAction()
     {
         var_dump($this->data);
