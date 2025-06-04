@@ -12,7 +12,8 @@
         "psr-4": {
             "App\\": "app/",
             "Bladex\\": "bladex/",
-            "Views\\": "views"
+            "Views\\": "views",
+            "Widgets\\": "wigets"
         }
     },
     "config": {

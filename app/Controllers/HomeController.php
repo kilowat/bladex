@@ -11,8 +11,6 @@ class HomeController extends BaseController
 
     public function indexAction()
     {
-        var_dump($this->data);
-        die();
         return view('home.index', []);
     }
 }
