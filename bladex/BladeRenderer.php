@@ -18,7 +18,7 @@ class BladeRenderer
 
     private readonly string $viewsPath;
     private readonly string $cachePath;
-    private readonly string $directivesPath;
+    private readonly array $directivesPath;
 
     private ?Factory $viewFactory = null;
     private ?BladeCompiler $compiler = null;
@@ -26,12 +26,15 @@ class BladeRenderer
 
     private function __construct()
     {
+
         $config = $this->getConfiguration();
         $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/local';
 
         $this->viewsPath = $config['views_path'] ?? $baseDir . '/views';
         $this->cachePath = $config['cache_path'] ?? $baseDir . '/cache/blade';
-        $this->directivesPath = $config['directives_path'] ?? $baseDir . '/config/blade_directives.php';
+        $bladeDirectives = $baseDir . '/bladex/directives.php';
+        $customDirectives = $baseDir . '/config/directives.php';
+        $this->directivesPath =  [$bladeDirectives,  $customDirectives];
 
         // Инициализируем сразу при создании экземпляра
         $this->boot();
@@ -173,21 +176,25 @@ class BladeRenderer
      */
     private function loadCustomDirectives(): void
     {
-        if (!file_exists($this->directivesPath)) {
-            return;
-        }
+        foreach($this->directivesPath as $path) {
+        
+            if (!file_exists($path)) {
+                return;
+            }
 
-        $directives = require $this->directivesPath;
+            $directives = require $path;
 
-        if (!is_array($directives)) {
-            return;
-        }
+            if (!is_array($directives)) {
+                return;
+            }
 
-        foreach ($directives as $name => $callback) {
-            if (is_string($name) && is_callable($callback)) {
-                $this->compiler->directive($name, $callback);
-            } elseif (is_callable($callback)) {
-                $callback($this->compiler);
+            foreach ($directives as $name => $callback) {
+       
+                if (is_string($name) && is_callable($callback)) {
+                    $this->compiler->directive($name, $callback);
+                } elseif (is_callable($callback)) {
+                    $callback($this->compiler);
+                }
             }
         }
     }
