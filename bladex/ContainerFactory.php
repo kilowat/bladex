@@ -1,0 +1,20 @@
+<?php
+namespace Bladex;
+
+use DI\Container;
+
+class ContainerFactory
+{
+    private static ?Container $container = null;
+
+    public static function getContainer(): Container
+    {
+        if (self::$container === null) {
+            $builder = new \DI\ContainerBuilder();
+            $builder->addDefinitions(__DIR__ . '/../config/dependencies.php');
+            self::$container = $builder->build();
+        }
+
+        return self::$container;
+    }
+}

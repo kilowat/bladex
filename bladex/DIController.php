@@ -1,25 +1,21 @@
 <?php
 namespace Bladex;
 
+use Bladex\ContainerFactory;
 use Bitrix\Main\Engine\Controller;
-use Bladex\Inject;
 use DI\Container;
 use ReflectionClass;
 use RuntimeException;
 
 abstract class DIController extends Controller
 {
-    protected static Container $container;
     private static array $injectablePropertiesCache = [];
-
-    public static function setContainer(Container $container): void
-    {
-        static::$container = $container;
-    }
+    protected Container $container;
 
     public function __construct($request = null)
     {
         parent::__construct($request);
+        $this->container = ContainerFactory::getContainer();
         $this->injectProperties();
     }
 
@@ -37,16 +33,13 @@ abstract class DIController extends Controller
                 throw new RuntimeException("Property '{$property->getName()}' must have a non-builtin type for DI injection.");
             }
 
-            $dependency = static::$container->get($type->getName());
+            $dependency = $this->container->get($type->getName());
 
             $property->setAccessible(true);
             $property->setValue($this, $dependency);
         }
     }
 
-    /**
-     * Рекурсивно собирает все свойства с #[Inject], включая родительские
-     */
     private function collectInjectableProperties(string $className): array
     {
         $injectable = [];
@@ -74,6 +67,6 @@ abstract class DIController extends Controller
             throw new RuntimeException("Метод действия {$method} не найден в " . static::class);
         }
 
-        return static::$container->call([$this, $method], $parameters);
+        return $this->container->call([$this, $method], $parameters);
     }
 }

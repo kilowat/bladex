@@ -11,6 +11,8 @@ class HomeController extends BaseController
 
     public function indexAction()
     {
+        $res = $this->data->getData();
+
         return view('home.index', []);
     }
 }
