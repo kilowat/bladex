@@ -2,4 +2,5 @@
 
 @section('content')
     Контент главная страница
+    @widget('last-news')
 @endsection

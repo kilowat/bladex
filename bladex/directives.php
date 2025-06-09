@@ -34,5 +34,7 @@ return [
         return "<?php \$APPLICATION->IncludeComponent($expression); ?>";
     },
     // Директива для проверки авторизации в Bitrix
-
+    'widget' => function ($expression) {
+        return "<?php echo \Bladex\WidgetFactory::fromView($expression); ?>";
+    },
 ];
