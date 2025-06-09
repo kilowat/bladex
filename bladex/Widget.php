@@ -3,7 +3,7 @@ namespace Bladex;
 
 use Bitrix\Main\HttpResponse;
 
-abstract class Widget
+abstract class Widget 
 {
     protected array $config = [];
 
@@ -18,9 +18,27 @@ abstract class Widget
 
         /** @var static $instance */
         $instance = $container->make(static::class);
-        $instance->config = $config;
+        
+        // Фильтруем конфигурацию, оставляя только разрешенные ключи
+        $instance->config = $instance->filterConfig($config);
 
         return $instance;
+    }
+
+    /**
+     * Фильтрует переданную конфигурацию, оставляя только ключи,
+     * которые определены в свойстве $config наследуемого класса
+     */
+    protected function filterConfig(array $inputConfig): array
+    {
+        // Получаем ключи из дефолтной конфигурации класса
+        $allowedKeys = array_keys($this->config);
+        
+        // Фильтруем входящую конфигурацию
+        $filteredConfig = array_intersect_key($inputConfig, array_flip($allowedKeys));
+        
+        // Объединяем с дефолтными значениями
+        return array_merge($this->config, $filteredConfig);
     }
 
     abstract public function run(): HttpResponse;

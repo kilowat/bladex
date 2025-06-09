@@ -8,6 +8,9 @@ use Bladex\Widget;
 
 class LastNews extends Widget
 {
+    protected array $config = [
+        'limit' => 10
+    ];
     public function __construct(protected DataBaseService $dataBaseService, )
     {
     }
@@ -15,7 +18,7 @@ class LastNews extends Widget
     public function run(): HttpResponse
     {
         $news = [
-            ['title' => 'Test'],
+            ['title' => $this->config['limit']],
         ];
         return view('last_news', ['items' => $news]);
     }
