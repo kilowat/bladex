@@ -29,7 +29,7 @@ class BladeRenderer
     {
 
         $config = $this->getConfiguration();
-        $this->baseDir = $_SERVER['DOCUMENT_ROOT'] . '/local/src';
+        $this->baseDir = useBaseDir();
 
         $this->viewsPath = $config['views_path'] ?? $this->baseDir . '/views';
         $this->cachePath = $config['cache_path'] ?? $this->baseDir . '/cache/blade';

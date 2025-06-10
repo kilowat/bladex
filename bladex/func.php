@@ -68,7 +68,7 @@ function useUpload($filePath, $cacheDir = '/upload/cache/', $domainOption = true
 
 function useBaseDir()
 {
-    return $_SERVER['DOCUMENT_ROOT'] . '/local/src';
+    return $_SERVER['DOCUMENT_ROOT'] . '/local';
 }
 /**
  * Получает значение из переменных окружения (.env)
