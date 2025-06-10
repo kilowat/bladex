@@ -13,6 +13,6 @@ class HomeController extends BaseController
     {
         $res = $this->data->getData();
 
-        return view('home.index', []);
+        return useView('home.index', []);
     }
 }

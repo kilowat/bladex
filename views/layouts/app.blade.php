@@ -15,7 +15,7 @@
 
     <header>
         <h1>{{ $siteName ?? 'Мой сайт' }}</h1>
-        <img src="{{ getFileUrl('/local/assets/logo.png') }}">
+        <img src="{{ useUpload('/local/assets/logo.png') }}">
     </header>
 
     <main>

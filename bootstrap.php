@@ -2,7 +2,7 @@
 require_once __DIR__ . '/bladex/func.php';
 
 $composerJsonPath = __DIR__ . '/composer.json';
-$vendorDir = '/vendor'; 
+$vendorDir = '/vendor';
 
 if (file_exists($composerJsonPath)) {
     $composerData = json_decode(file_get_contents($composerJsonPath), true);
@@ -21,3 +21,5 @@ if (!$vendorPath || !file_exists($vendorPath . '/autoload.php')) {
 }
 
 require_once $vendorPath . '/autoload.php';
+
+require_once __DIR__ . '/bladex/events.php';

@@ -20,6 +20,6 @@ class LastNews extends Widget
         $news = [
             ['title' => $this->config['limit']],
         ];
-        return view('last_news', ['items' => $news]);
+        return useView('last_news', ['items' => $news]);
     }
 }
