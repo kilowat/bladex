@@ -13,3 +13,6 @@ settings.php
 ],
 
 
+location ~* ^/local/.*\.php$ {
+    deny all;
+}
