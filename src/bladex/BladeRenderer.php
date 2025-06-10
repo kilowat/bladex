@@ -23,18 +23,19 @@ class BladeRenderer
     private ?Factory $viewFactory = null;
     private ?BladeCompiler $compiler = null;
     private bool $isBooted = false;
+    private $baseDir;
 
     private function __construct()
     {
 
         $config = $this->getConfiguration();
-        $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/local';
+        $this->baseDir = $_SERVER['DOCUMENT_ROOT'] . '/local/src';
 
-        $this->viewsPath = $config['views_path'] ?? $baseDir . '/views';
-        $this->cachePath = $config['cache_path'] ?? $baseDir . '/cache/blade';
-        $bladeDirectives = $baseDir . '/bladex/directives.php';
-        $customDirectives = $baseDir . '/config/directives.php';
-        $this->directivesPath =  [$bladeDirectives,  $customDirectives];
+        $this->viewsPath = $config['views_path'] ?? $this->baseDir . '/views';
+        $this->cachePath = $config['cache_path'] ?? $this->baseDir . '/cache/blade';
+        $bladeDirectives = $this->baseDir . '/bladex/directives.php';
+        $customDirectives = $this->baseDir . '/config/directives.php';
+        $this->directivesPath = [$bladeDirectives, $customDirectives];
 
         // Инициализируем сразу при создании экземпляра
         $this->boot();
@@ -176,8 +177,8 @@ class BladeRenderer
      */
     private function loadCustomDirectives(): void
     {
-        foreach($this->directivesPath as $path) {
-        
+        foreach ($this->directivesPath as $path) {
+
             if (!file_exists($path)) {
                 return;
             }
@@ -189,7 +190,7 @@ class BladeRenderer
             }
 
             foreach ($directives as $name => $callback) {
-       
+
                 if (is_string($name) && is_callable($callback)) {
                     $this->compiler->directive($name, $callback);
                 } elseif (is_callable($callback)) {
@@ -214,7 +215,7 @@ class BladeRenderer
      */
     private function getConfiguration(): array
     {
-        $configPath = $_SERVER['DOCUMENT_ROOT'] . '/local/config/blade.php';
+        $configPath = $this->baseDir . '/config/blade.php';
 
         if (file_exists($configPath)) {
             return include $configPath;
