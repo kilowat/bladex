@@ -1,12 +1,19 @@
 <?php
+
 namespace Bladex;
 
 use Bladex\ContainerFactory;
 use Bitrix\Main\Engine\Controller;
 use DI\Container;
 use ReflectionClass;
+use ReflectionProperty;
 use RuntimeException;
-
+/*
+ *  // Внедрение по name
+    #[Inject(name: 'database.main')] или просто   
+     #[Inject]
+    protected LoggerService $defaultLogger;
+ */
 abstract class DIController extends Controller
 {
     private static array $injectablePropertiesCache = [];
@@ -27,17 +34,46 @@ abstract class DIController extends Controller
             self::$injectablePropertiesCache[$className] = $this->collectInjectableProperties($className);
         }
 
-        foreach (self::$injectablePropertiesCache[$className] as $property) {
+        foreach (self::$injectablePropertiesCache[$className] as $propertyInfo) {
+            $this->injectProperty($propertyInfo);
+        }
+    }
+
+    private function injectProperty(array $propertyInfo): void
+    {
+        /** @var ReflectionProperty $property */
+        $property = $propertyInfo['property'];
+        /** @var Inject $injectAttribute */
+        $injectAttribute = $propertyInfo['inject_attribute'];
+
+        $dependency = null;
+
+        // Проверяем name
+        if ($injectAttribute->name !== null) {
+            $dependency = $this->container->get($injectAttribute->name);
+        }
+        // Проверяем alias
+        elseif ($injectAttribute->alias !== null) {
+            $dependency = $this->container->get($injectAttribute->alias);
+        }
+        // Стандартное внедрение по типу
+        else {
             $type = $property->getType();
             if (!$type || $type->isBuiltin()) {
-                throw new RuntimeException("Property '{$property->getName()}' must have a non-builtin type for DI injection.");
+                throw new RuntimeException(
+                    "Property '{$property->getName()}' must have a non-builtin type for DI injection " .
+                    "or specify 'name' or 'alias' parameter in #[Inject] attribute."
+                );
             }
-
             $dependency = $this->container->get($type->getName());
-
-            $property->setAccessible(true);
-            $property->setValue($this, $dependency);
         }
+
+        if ($dependency === null) {
+            throw new RuntimeException("Unable to resolve dependency for property '{$property->getName()}'");
+        }
+
+        $property->setAccessible(true);
+        $property->setValue($this, $dependency);
     }
 
     private function collectInjectableProperties(string $className): array
@@ -47,9 +83,16 @@ abstract class DIController extends Controller
 
         do {
             foreach ($reflection->getProperties() as $property) {
-                $attrs = $property->getAttributes(Inject::class);
-                if (!empty($attrs)) {
-                    $injectable[] = $property;
+                $injectAttrs = $property->getAttributes(Inject::class);
+
+                if (!empty($injectAttrs)) {
+                    // Берем первый атрибут Inject (должен быть только один)
+                    $injectAttribute = $injectAttrs[0]->newInstance();
+
+                    $injectable[] = [
+                        'property' => $property,
+                        'inject_attribute' => $injectAttribute
+                    ];
                 }
             }
 
