@@ -3,38 +3,17 @@ namespace Bladex;
 
 class WidgetFactory
 {
-    public static function fromView(string $widgetName, array|string $configOrPreset = [], array $overrides = []): string
+    public static function create(string $name, array $config = []): Widget
     {
-        $map = include $_SERVER['DOCUMENT_ROOT'] . '/local/config/widgets.php';
+        // Пример: 'news.latest' => '\\Widgets\\News\\Latest'
+        $parts = explode('.', $name);
+        $parts = array_map('ucfirst', $parts);
+        $class = 'App\\Widgets\\' . implode('\\', $parts);
 
-        if (!isset($map[$widgetName])) {
-            return $_ENV['APP_DEBUG'] ? "Widget \"$widgetName\" not defined in config." : '';
+        if (!class_exists($class) || !is_subclass_of($class, Widget::class)) {
+            throw new \RuntimeException("Widget class {$class} not found or not a subclass of Widget.");
         }
 
-        $widgetDef = $map[$widgetName];
-        $class = $widgetDef['class'] ?? null;
-
-        if (!$class || !class_exists($class) || !is_subclass_of($class, Widget::class)) {
-            return $_ENV['APP_DEBUG'] ? "Invalid widget class for \"$widgetName\"." : '';
-        }
-
-        $presetConfig = [];
-
-        if (is_string($configOrPreset)) {
-            $presetConfig = $widgetDef['configs'][$configOrPreset] ?? [];
-        } elseif (is_array($configOrPreset)) {
-            $presetConfig = $configOrPreset;
-        }
-
-        $config = array_merge($presetConfig, $overrides);
-
-        /** @var Widget $widget */
-        $widget = $class::make($config);
-
-        try {
-            return $widget->render();
-        } catch (\Throwable $e) {
-            return $_ENV['APP_DEBUG'] ? "Widget \"$widgetName\" error: " . $e->getMessage() : '';
-        }
+        return $class::make($config);
     }
 }

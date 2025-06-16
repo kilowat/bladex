@@ -35,6 +35,6 @@ return [
     },
     // Директива для проверки авторизации в Bitrix
     'widget' => function ($expression) {
-        return "<?php echo \Bladex\WidgetFactory::fromView($expression); ?>";
+        return "<?php echo \\Bladex\\WidgetFactory::create({$expression})->render(); ?>";
     },
 ];

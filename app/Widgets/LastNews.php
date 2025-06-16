@@ -1,6 +1,6 @@
 <?php
 
-namespace Widgets;
+namespace App\Widgets;
 
 use App\Services\DataBaseService;
 use Bitrix\Main\HttpResponse;

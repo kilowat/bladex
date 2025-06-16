@@ -13,7 +13,6 @@
             "App\\": "app/",
             "Bladex\\": "bladex/",
             "Views\\": "views/",
-            "Widgets\\": "widgets/"
         }
     },
     "config": {

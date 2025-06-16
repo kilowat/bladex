@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Services\DataBaseService;
 use DI\Attribute\Inject;
+
 class HomeController extends BaseController
 {
     #[Inject]
