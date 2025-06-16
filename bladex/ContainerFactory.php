@@ -11,6 +11,7 @@ class ContainerFactory
     {
         if (self::$container === null) {
             $builder = new \DI\ContainerBuilder();
+            $builder->useAttributes(true);
             $builder->addDefinitions(__DIR__ . '/../config/dependencies.php');
             self::$container = $builder->build();
         }
