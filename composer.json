@@ -25,7 +25,7 @@
     "extra": {
         "merge-plugin": {
             "require": [
-                "../bitrix/composer-bx.json"
+                "/var/www/bitrix/bitrix/composer-bx.json"
             ]
         }
     }
