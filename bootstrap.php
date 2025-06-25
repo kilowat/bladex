@@ -1,4 +1,6 @@
 <?php
+
+
 require_once __DIR__ . '/bladex/func.php';
 
 $composerJsonPath = __DIR__ . '/composer.json';

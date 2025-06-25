@@ -16,3 +16,17 @@ settings.php
 location ~* ^/local/.*\.php$ {
     deny all;
 }
+
+в init.php 
+define('APP_PATH', realpath(__DIR__ . '/../../../myapp'));
+require_once realpath(APP_PATH.'/bootstrap.php');
+
+подключения роутов
+use Bitrix\Main\Routing\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes) {
+    $closure = include APP_PATH.'/route/web.php';
+    if ($closure instanceof Closure) {
+        $closure($routes);
+    }
+};
