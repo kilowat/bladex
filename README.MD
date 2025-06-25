@@ -30,3 +30,7 @@ return function (RoutingConfigurator $routes) {
         $closure($routes);
     }
 };
+
+симилинк на ассеты
+
+ln -s /var/www/myapp/assets /var/www/public/assets

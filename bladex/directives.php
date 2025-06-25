@@ -2,12 +2,25 @@
 return [
     // Подключить CSS
     'css' => function ($expression) {
-        return "<?php \\Bitrix\\Main\\Page\\Asset::getInstance()->addCss('/local/assets/' . {$expression}); ?>";
+        return <<<PHP
+    <?php
+        \$__paths = is_array({$expression}) ? {$expression} : [{$expression}];
+        foreach (\$__paths as \$__path) {
+            \Bitrix\Main\Page\Asset::getInstance()->addCss('/' . ltrim(trim(\$__path, "'\""), '/'));
+        }
+    ?>
+    PHP;
     },
 
-    // Подключить JS
     'js' => function ($expression) {
-        return "<?php \\Bitrix\\Main\\Page\\Asset::getInstance()->addJs('/local/assets/' . {$expression}); ?>";
+        return <<<PHP
+    <?php
+        \$__paths = is_array({$expression}) ? {$expression} : [{$expression}];
+        foreach (\$__paths as \$__path) {
+            \Bitrix\Main\Page\Asset::getInstance()->addJs('/' . ltrim(trim(\$__path, "'\""), '/'));
+        }
+    ?>
+    PHP;
     },
 
     // Вывести все стили

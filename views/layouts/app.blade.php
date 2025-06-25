@@ -1,5 +1,5 @@
-@css('app.css')
-@js('app.js')
+@css('assets/app.css')
+@js('assets/app.js')
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,7 +15,7 @@
 
     <header>
         <h1>{{ $siteName ?? 'Мой сайт' }}</h1>
-        <img src="{{ useUpload('/assets/logo.png') }}">
+        <img src="{{ useUpload('assets/logo.png') }}">
     </header>
 
     <main>

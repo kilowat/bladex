@@ -30,7 +30,7 @@ class BladeRenderer
 
         $config = $this->getConfiguration();
         $this->baseDir = useBaseDir();
-
+      
         $this->viewsPath = $config['views_path'] ?? $this->baseDir . '/views';
         $this->cachePath = $config['cache_path'] ?? $this->baseDir . '/cache/blade';
         $bladeDirectives = $this->baseDir . '/bladex/directives.php';
