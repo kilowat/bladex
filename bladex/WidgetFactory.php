@@ -8,7 +8,7 @@ class WidgetFactory
         // Пример: 'news.latest' => '\\Widgets\\News\\Latest'
         $parts = explode('.', $name);
         $parts = array_map('ucfirst', $parts);
-        $class = 'App\\Widgets\\' . implode('\\', $parts);
+        $class = 'Widgets\\' . implode('\\', $parts);
 
         if (!class_exists($class) || !is_subclass_of($class, Widget::class)) {
             throw new \RuntimeException("Widget class {$class} not found or not a subclass of Widget.");

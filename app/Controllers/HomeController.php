@@ -1,7 +1,7 @@
 <?php
-namespace App\Controllers;
+namespace Controllers;
 
-use App\Services\DataBaseService;
+use Services\DataBaseService;
 use DI\Attribute\Inject;
 
 class HomeController extends BaseController

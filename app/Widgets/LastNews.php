@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Widgets;
+namespace Widgets;
 
-use App\Services\DataBaseService;
+use Services\DataBaseService;
 use Bitrix\Main\HttpResponse;
 use Bladex\Widget;
 
