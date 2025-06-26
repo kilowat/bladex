@@ -11,7 +11,7 @@ function useRoute(string $name, array $params = [])
     return $router->route($name, $params);
 }
 
-function useUpload($filePath, $cacheDir = '/upload/cache/', $domainOption = true)
+function useAsset(string $filePath, bool|string $domainOption = true): string|false
 {
     $fullPath = useBaseDir() . $filePath;
 
@@ -19,38 +19,21 @@ function useUpload($filePath, $cacheDir = '/upload/cache/', $domainOption = true
         return false;
     }
 
-    // Создаём хеш-файл
-    $fileHash = md5_file($fullPath) . '_' . filemtime($fullPath);
-    $pathInfo = pathinfo($filePath);
+    $timestamp = filemtime($fullPath);
+    $versionedPath = '/' . $filePath . '?v=' . $timestamp;
 
-    // Генерируем имя кэшированного файла
-    $cachedFileName = $pathInfo['filename'] . '_' . substr($fileHash, 0, 8) . '.' . $pathInfo['extension'];
-    $cachedPath = rtrim($cacheDir, '/') . '/' . $cachedFileName;
-    $cachedFullPath = $_SERVER['DOCUMENT_ROOT'] . $cachedPath;
-    $cacheFullDir = $_SERVER['DOCUMENT_ROOT'] . rtrim($cacheDir, '/');
-
-    // Создаём папку кэша, если не существует
-    if (!is_dir($cacheFullDir)) {
-        mkdir($cacheFullDir, 0755, true);
-    }
-
-    // Копируем файл в кэш, если его ещё нет
-    if (!file_exists($cachedFullPath)) {
-        copy($fullPath, $cachedFullPath);
-    }
-
-    // Возвращаем путь в зависимости от опции домена
     if ($domainOption === false) {
-        return $cachedPath;
-    } elseif ($domainOption === true) {
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $domain = $_SERVER['HTTP_HOST'];
-        return $protocol . $domain . $cachedPath;
-    } elseif (is_string($domainOption)) {
-        return rtrim($domainOption, '/') . $cachedPath;
+        return $versionedPath;
     }
 
-    return $cachedPath;
+    if ($domainOption === true) {
+        $request = Bitrix\Main\Context::getCurrent()->getRequest();
+        $protocol = $request->isHttps() ? 'https://' : 'http://';
+        $host = $request->getHttpHost();
+        return $protocol . $host . $versionedPath;
+    }
+
+    return rtrim($domainOption, '/') . $versionedPath;
 }
 
 function useBaseDir($path = '')
