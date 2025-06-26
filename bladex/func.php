@@ -71,68 +71,6 @@ function useBaseDir($path = '')
     $path = !empty($path) ? '/' . $path : $path;
     return dirname(__FILE__, 2) . $path . '/';
 }
-/**
- * Получает значение из переменных окружения (.env)
- * 
- * @param string $key Ключ переменной окружения
- * @param mixed $default Значение по умолчанию
- * @return mixed
- */
-function env(string $key, mixed $default = null): mixed
-{
-    // Проверяем переменные окружения сначала
-    $value = $_ENV[$key] ?? getenv($key);
-
-    // Если не найдено в переменных окружения, пытаемся загрузить из .env файла
-    if ($value === false) {
-        static $envLoaded = false;
-        static $envVars = [];
-
-        if (!$envLoaded) {
-            $envPath = dirname(__FILE__, 2) . '/.env';
-
-            if (file_exists($envPath)) {
-                $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-                foreach ($lines as $line) {
-                    // Пропускаем комментарии
-                    if (strpos(trim($line), '#') === 0) {
-                        continue;
-                    }
-
-                    // Парсим строку KEY=VALUE
-                    if (strpos($line, '=') !== false) {
-                        [$envKey, $envValue] = explode('=', $line, 2);
-                        $envKey = trim($envKey);
-                        $envValue = trim($envValue);
-
-                        // Убираем кавычки если есть
-                        $envValue = trim($envValue, '"\'');
-
-                        $envVars[$envKey] = $envValue;
-                    }
-                }
-            }
-
-            $envLoaded = true;
-        }
-
-        $value = $envVars[$key] ?? false;
-    }
-
-    if ($value === false) {
-        return $default;
-    }
-
-    // Преобразование строковых значений в соответствующие типы
-    return match (strtolower($value)) {
-        'true', '(true)' => true,
-        'false', '(false)' => false,
-        'null', '(null)' => null,
-        'empty', '(empty)' => '',
-        default => $value
-    };
-}
 
 /**
  * Получает значение из конфигурации по ключу или весь массив
@@ -145,9 +83,7 @@ function env(string $key, mixed $default = null): mixed
  */
 function useConfig(array|string $config, ?string $key = null, mixed $default = null): mixed
 {
-    // Если передан путь к файлу - загружаем конфиг
     if (is_string($config)) {
-        // Формируем путь к файлу в папке config
         $configPath = dirname(__FILE__, 2) . "/config/{$config}.php";
 
         if (!file_exists($configPath)) {
@@ -156,7 +92,6 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
 
         $loadedConfig = include $configPath;
 
-        // Проверяем что файл вернул массив
         if (!is_array($loadedConfig)) {
             return $default ?? null;
         }
@@ -164,17 +99,14 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
         $config = $loadedConfig;
     }
 
-    // Если конфиг не является массивом, возвращаем дефолт
     if (!is_array($config)) {
         return $default ?? null;
     }
 
-    // Если ключ не передан - возвращаем весь массив
     if ($key === null) {
         return $config;
     }
 
-    // Поддержка точечной нотации для вложенных ключей
     if (strpos($key, '.') !== false) {
         $keys = explode('.', $key);
         $value = $config;
@@ -189,6 +121,5 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
         return $value;
     }
 
-    // Возвращаем значение по ключу или дефолт
     return $config[$key] ?? $default ?? null;
 }
