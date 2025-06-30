@@ -21,29 +21,25 @@ settings.php
         }
     }
 
-
-location ~* ^/local/.*\.php$ {
-    deny all;
-}
-
 в init.php 
-define('APP_PATH', realpath(__DIR__ . '/../../../myapp'));
+define('APP_PATH', '/var/www/myapp');
 require_once realpath(APP_PATH.'/bootstrap.php');
 
 подключения роутов
 
-define('APP_PATH', realpath(__DIR__ . '/../../../myapp'));
+define('APP_PATH', '/var/www/myapp');
 require_once realpath(APP_PATH.'/bootstrap.php');
 
 use Bitrix\Main\Routing\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes) {
-    $closure = include APP_PATH.'/route/web.php';
+    $closure = include APP_PATH.'/routes/web.php';
     if ($closure instanceof Closure) {
         $closure($routes);
     }
 };
+##Для Bitrixdoc
+пробросить volumes в php и nginx ./www/myapp:/var/www/myapp
 
-симилинк на ассеты
-
-ln -s /var/www/myapp/assets /var/www/public/assets
+###симилинк на ассеты
+ln -s /var/www/myapp/assets /var/www/bitrix/assets
