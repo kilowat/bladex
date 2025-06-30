@@ -26,18 +26,8 @@ define('APP_PATH', '/var/www/myapp');
 require_once realpath(APP_PATH.'/bootstrap.php');
 
 подключения роутов
+return include '/var/www/myapp/routes_inc.php';
 
-define('APP_PATH', '/var/www/myapp');
-require_once realpath(APP_PATH.'/bootstrap.php');
-
-use Bitrix\Main\Routing\RoutingConfigurator;
-
-return function (RoutingConfigurator $routes) {
-    $closure = include APP_PATH.'/routes/web.php';
-    if ($closure instanceof Closure) {
-        $closure($routes);
-    }
-};
 ##Для Bitrixdoc
 пробросить volumes в php и nginx ./www/myapp:/var/www/myapp
 

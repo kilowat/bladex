@@ -6,13 +6,15 @@ use DI\Attribute\Inject;
 
 class HomeController extends BaseController
 {
+
     #[Inject]
     protected DataBaseService $data;
 
 
-    public function indexAction()
+    public function indexAction(DataBaseService $data)
     {
-        $res = $this->data->getData();
+
+        $res = $data->getData();
 
         return useView('home.index', []);
     }
