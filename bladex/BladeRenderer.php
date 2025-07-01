@@ -70,7 +70,7 @@ class BladeRenderer
         $this->isBooted = true;
     }
 
-    public function render(string $view, array $data = []): HttpResponse
+    public function response(string $view, array $data = []): HttpResponse
     {
         try {
             $html = $this->viewFactory->make($view, $data)->render();
@@ -97,7 +97,7 @@ class BladeRenderer
         }
     }
 
-    public function renderToString(string $view, array $data = []): string
+    public function show(string $view, array $data = []): string
     {
         return $this->viewFactory->make($view, $data)->render();
     }

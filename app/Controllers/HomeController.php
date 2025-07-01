@@ -16,6 +16,6 @@ class HomeController extends BaseController
 
         $res = $data->getData();
 
-        return useView('home.index', []);
+        return useView()->response('home.index', []);
     }
 }

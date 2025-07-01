@@ -6,5 +6,5 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/', [Controllers\HomeController::class, 'index'])->name('home');
     $routes->get('/test', function () {
         return 'test';
-    });
+    })->name('test');
 };

@@ -1,14 +1,20 @@
 <?php
 
-function useView(string $template, array $data = []): Bitrix\Main\HttpResponse
+function useView(): Bladex\BladeRenderer
 {
-    return Bladex\BladeRenderer::getInstance()->render($template, $data);
+    return Bladex\BladeRenderer::getInstance();
 }
 
-function useRoute(string $name, array $params = [])
+function useRouter(): Bitrix\Main\Routing\Router
 {
-    $router = \Bitrix\Main\Application::getInstance()->getRouter();
-    return $router->route($name, $params);
+    return \Bitrix\Main\Application::getInstance()->getRouter();
+
+}
+
+function useContainer(): DI\Container
+{
+    return \Bladex\ContainerFactory::getContainer();
+
 }
 
 function useAsset(string $filePath, bool|string $domainOption = true): string|false
