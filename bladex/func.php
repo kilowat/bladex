@@ -13,7 +13,7 @@ function useRoute(string $name, array $params = [])
 
 function useAsset(string $filePath, bool|string $domainOption = true): string|false
 {
-    $fullPath = useBaseDir() . $filePath;
+    $fullPath = useBaseDir($filePath);
 
     if (!file_exists($fullPath)) {
         return false;
@@ -39,7 +39,7 @@ function useAsset(string $filePath, bool|string $domainOption = true): string|fa
 function useBaseDir($path = '')
 {
     $path = !empty($path) ? '/' . $path : $path;
-    return dirname(__FILE__, 2) . $path . '/';
+    return dirname(__FILE__, 2) . $path;
 }
 
 /**
