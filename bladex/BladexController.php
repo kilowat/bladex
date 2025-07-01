@@ -3,7 +3,7 @@ namespace Bladex;
 
 use Bitrix\Main\Engine\Controller;
 
-abstract class DIController extends Controller
+abstract class BladexController extends Controller
 {
     public function __construct($request = null)
     {
@@ -24,5 +24,13 @@ abstract class DIController extends Controller
         }
 
         return ContainerFactory::getContainer()->call([$this, $method], $parameters);
+
+    }
+
+    protected function processAfterAction(\Bitrix\Main\Engine\Action $action, $result)
+    {
+        if ($result instanceof View) {
+            return $result->getResponse();
+        }
     }
 }

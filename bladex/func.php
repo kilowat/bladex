@@ -1,13 +1,15 @@
 <?php
 
-function useView(): Bladex\BladeRenderer
+use Bladex\View;
+
+function useView($view = ''): View
 {
-    return Bladex\BladeRenderer::getInstance();
+    return \Bladex\BladeRenderer::getInstance()->make($view);
 }
 
-function useRouter(): Bitrix\Main\Routing\Router
+function useRoute($name, $parameters = []): string
 {
-    return \Bitrix\Main\Application::getInstance()->getRouter();
+    return \Bitrix\Main\Application::getInstance()->getRouter()->route($name, $parameters);
 
 }
 

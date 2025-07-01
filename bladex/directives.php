@@ -42,11 +42,10 @@ return [
         return "<?php endif; ?>";
     },
 
-    // Директива для подключения компонентов Bitrix
     'component' => function ($expression) {
         return "<?php \$APPLICATION->IncludeComponent($expression); ?>";
     },
-    // Директива для проверки авторизации в Bitrix
+
     'widget' => function ($expression) {
         return "<?php echo \\Bladex\\WidgetFactory::create({$expression})->render(); ?>";
     },

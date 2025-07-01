@@ -22,8 +22,8 @@ settings.php
     }
 
 в init.php 
-define('APP_PATH', '/var/www/myapp');
-require_once realpath(APP_PATH.'/bootstrap.php');
+
+require_once realpath('/var/www/myapp/bootstrap.php');
 
 подключения роутов
 return include '/var/www/myapp/routes_inc.php';

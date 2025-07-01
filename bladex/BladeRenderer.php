@@ -1,5 +1,4 @@
 <?php
-
 namespace Bladex;
 
 use Illuminate\View\Compilers\BladeCompiler;
@@ -22,16 +21,16 @@ class BladeRenderer
     private ?Factory $viewFactory = null;
     private ?BladeCompiler $compiler = null;
     private bool $isBooted = false;
-    private $baseDir;
+    private string $baseDir;
 
     private function __construct()
     {
-
         $config = $this->getConfiguration();
         $this->baseDir = useBaseDir();
 
         $this->viewsPath = $config['views_path'] ?? $this->baseDir . '/views';
         $this->cachePath = $config['cache_path'] ?? $this->baseDir . '/cache/blade';
+
         $bladeDirectives = $this->baseDir . '/bladex/directives.php';
         $customDirectives = $this->baseDir . '/config/directives.php';
         $this->directivesPath = [$bladeDirectives, $customDirectives];
@@ -42,6 +41,108 @@ class BladeRenderer
     public static function getInstance(): self
     {
         return self::$instance ??= new self();
+    }
+
+    /**
+     * Create view instance for fluent API
+     */
+    public function make(string $view): View
+    {
+        return new View($this, $view);
+    }
+
+    /**
+     * Render view and return HttpResponse
+     */
+    public function getResponse(string $view, array $data = []): HttpResponse
+    {
+        try {
+            $html = $this->viewFactory->make($view, $data)->render();
+
+            return (new HttpResponse())
+                ->setContent($html)
+                ->addHeader('Content-Type', 'text/html; charset=UTF-8');
+
+        } catch (\Exception $e) {
+            $this->logError($e, $view, $data);
+
+            if ($this->isDebugMode()) {
+                return (new HttpResponse())
+                    ->setContent($this->renderErrorPage($e, $view, $data))
+                    ->setStatus(500);
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Render view and return HTML string
+     */
+    public function getHtml(string $view, array $data = []): string
+    {
+        return $this->viewFactory->make($view, $data)->render();
+    }
+
+    /**
+     * Check if view exists
+     */
+    public function exists(string $view): bool
+    {
+        return $this->viewFactory->exists($view);
+    }
+
+    /**
+     * Share data across all views
+     */
+    public function share(string|array $key, mixed $value = null): self
+    {
+        $this->viewFactory->share($key, $value);
+        return $this;
+    }
+
+    /**
+     * Get view factory instance
+     */
+    public function getViewFactory(): Factory
+    {
+        return $this->viewFactory;
+    }
+
+    /**
+     * Get blade compiler instance
+     */
+    public function getCompiler(): BladeCompiler
+    {
+        return $this->compiler;
+    }
+
+    /**
+     * Clear compiled view cache
+     */
+    public function clearCache(): bool
+    {
+        $filesystem = new Filesystem();
+
+        if (!$filesystem->exists($this->cachePath)) {
+            return true;
+        }
+
+        try {
+            $filesystem->cleanDirectory($this->cachePath);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Add custom directive
+     */
+    public function directive(string $name, callable $callback): self
+    {
+        $this->compiler->directive($name, $callback);
+        return $this;
     }
 
     private function boot(): void
@@ -70,90 +171,20 @@ class BladeRenderer
         $this->isBooted = true;
     }
 
-    public function response(string $view, array $data = []): HttpResponse
-    {
-        try {
-            $html = $this->viewFactory->make($view, $data)->render();
-
-            return (new HttpResponse())
-                ->setContent($html)
-                ->addHeader('Content-Type', 'text/html; charset=UTF-8');
-
-        } catch (\Exception $e) {
-            \Bitrix\Main\Diag\Debug::writeToFile([
-                'message' => 'Blade render error',
-                'view' => $view,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ], '', '/local/logs/blade_errors.log');
-
-            if ($this->isDebugMode()) {
-                return (new HttpResponse())
-                    ->setContent($this->renderErrorPage($e, $view, $data))
-                    ->setStatus(500);
-            }
-
-            throw $e;
-        }
-    }
-
-    public function show(string $view, array $data = []): string
-    {
-        return $this->viewFactory->make($view, $data)->render();
-    }
-
-    public function exists(string $view): bool
-    {
-        return $this->viewFactory->exists($view);
-    }
-
-    public function share(string|array $key, mixed $value = null): void
-    {
-        $this->viewFactory->share($key, $value);
-    }
-
-    public function getViewFactory(): Factory
-    {
-        return $this->viewFactory;
-    }
-
-    public function getCompiler(): BladeCompiler
-    {
-        return $this->compiler;
-    }
-
-    public function clearCache(): bool
-    {
-        $filesystem = new Filesystem();
-
-        if (!$filesystem->exists($this->cachePath)) {
-            return true;
-        }
-
-        try {
-            $filesystem->cleanDirectory($this->cachePath);
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
     private function loadCustomDirectives(): void
     {
         foreach ($this->directivesPath as $path) {
-
             if (!file_exists($path)) {
-                return;
+                continue;
             }
 
             $directives = require $path;
 
             if (!is_array($directives)) {
-                return;
+                continue;
             }
 
             foreach ($directives as $name => $callback) {
-
                 if (is_string($name) && is_callable($callback)) {
                     $this->compiler->directive($name, $callback);
                 } elseif (is_callable($callback)) {
@@ -172,18 +203,32 @@ class BladeRenderer
 
     private function getConfiguration(): array
     {
-        $configPath = $this->baseDir . '/config/blade.php';
-
-        if (file_exists($configPath)) {
-            return include $configPath;
-        }
-
-        return [];
+        return useConfig('blade');
     }
 
     private function isDebugMode(): bool
     {
-        return Configuration::getValue('exception_handling')['debug'] === true;
+        try {
+            return Configuration::getValue('exception_handling')['debug'] === true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    private function logError(\Exception $e, string $view, array $data): void
+    {
+        try {
+            \Bitrix\Main\Diag\Debug::writeToFile([
+                'message' => 'Blade render error',
+                'view' => $view,
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ], '', '/local/logs/blade_errors.log');
+        } catch (\Exception $logException) {
+            // Если не удается записать в лог, игнорируем
+        }
     }
 
     private function renderErrorPage(\Exception $e, string $view, array $data): string

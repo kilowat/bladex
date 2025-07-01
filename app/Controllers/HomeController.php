@@ -14,8 +14,8 @@ class HomeController extends BaseController
     public function indexAction(DataBaseService $data)
     {
 
-        $res = $data->getData();
+        $result = $data->getData();
 
-        return useView()->response('home.index', []);
+        return useView('home.index')->with(['result' => $result]);
     }
 }

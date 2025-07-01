@@ -1,9 +1,9 @@
 <?php
 namespace Controllers;
 
-use Bladex\DIController;
+use Bladex\BladexController;
 
-abstract class BaseController extends DIController
+abstract class BaseController extends BladexController
 {
     protected function getDefaultPreFilters(): array
     {

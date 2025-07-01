@@ -3,7 +3,7 @@
 namespace Widgets;
 
 use Services\DataBaseService;
-use Bitrix\Main\HttpResponse;
+use Bladex\View;
 use Bladex\Widget;
 
 class LastNews extends Widget
@@ -15,11 +15,12 @@ class LastNews extends Widget
     {
     }
 
-    public function run(): HttpResponse
+    public function run(): View
     {
         $news = [
             ['title' => $this->config['limit']],
         ];
-        return useView()->response('last_news', ['items' => $news]);
+
+        return useView('last_news')->with('items', $news);
     }
 }

@@ -38,11 +38,10 @@ abstract class Widget
         return array_merge($this->config, $filteredConfig);
     }
 
-    abstract public function run(): HttpResponse;
+    abstract public function run(): View;
 
     public function render(): string
     {
-        $response = $this->run();
-        return method_exists($response, 'getContent') ? $response->getContent() : '';
+        return $this->run()->getHtml();
     }
 }
