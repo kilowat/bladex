@@ -30,7 +30,24 @@ abstract class BladexController extends Controller
     protected function processAfterAction(\Bitrix\Main\Engine\Action $action, $result)
     {
         if ($result instanceof View) {
+
             return $result->getResponse();
         }
+    }
+
+    /**
+     * ГЛАВНЫЙ МЕТОД - переопределяем обработку исключений
+     */
+    protected function runProcessingException(\Exception $e)
+    {
+        /*
+        parent::runProcessingException($e);
+        $errors = $this->getErrors();
+        var_dump($errors);
+        die();
+        $response = useView('error')->with('error', $error)->getResponse();
+        $response->setStatus('400 Bad Request');
+        $response->send();
+        */
     }
 }
