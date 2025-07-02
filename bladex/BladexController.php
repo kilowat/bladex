@@ -41,13 +41,17 @@ abstract class BladexController extends Controller
     protected function runProcessingException(\Exception $e)
     {
         /*
-        parent::runProcessingException($e);
-        $errors = $this->getErrors();
-        var_dump($errors);
-        die();
-        $response = useView('error')->with('error', $error)->getResponse();
-        $response->setStatus('400 Bad Request');
+        $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
+        if (!empty($exceptionHandling['debug'])) {
+            $error = new \Bitrix\Main\Error(\Bitrix\Main\Diag\ExceptionHandlerFormatter::format($e));
+            $response = useView('errors.debug')->with('error', $error)->getResponse();
+        }
+
+        $response->setStatus(500);
         $response->send();
+
+        parent::runProcessingException($e);
         */
     }
+
 }
