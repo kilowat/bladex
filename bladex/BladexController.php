@@ -39,17 +39,17 @@ abstract class BladexController extends Controller
             return $result->getResponse();
         }
     }
-
+    /*
     protected function runProcessingThrowable(\Throwable $throwable)
     {
         if ($throwable instanceof AppException) {
-            $handler = new AppExceptionHandler();
-            $handler->render($this->request, $throwable);
+            $handler = new AppExceptionHandler($this);
+            $handler->runProcessingThrowable($throwable);
         } else {
             parent::runProcessingThrowable($throwable);
         }
     }
-
+    */
     public function finalizeResponse(\Bitrix\Main\Response $response)
     {
         if (!$this->request->isJson() && !$this->request->isAjaxRequest() && !empty($this->getErrors())) {
