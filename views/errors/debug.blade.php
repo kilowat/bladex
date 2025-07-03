@@ -48,18 +48,22 @@
 
 <body>
     <div class="container">
-        <div class="error-title">{{ $error->getMessage() }}</div>
+        @foreach ($errors as $error)
+            <div class="error-title">{{ $error->getMessage() }}</div>
 
-        <div class="error-code">Код ошибки: {{ $error->getCode() }}</div>
+            <div class="error-code">Код ошибки: {{ $error->getCode() }}</div>
 
-        @if ($error->getCustomData())
-            <div>
-                <strong>Дополнительные данные:</strong>
-                <div class="error-data">
-                    {{ json_encode($error->getCustomData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
+            @if ($error->getCustomData())
+                <div>
+                    <strong>Дополнительные данные:</strong>
+                    <div class="error-data">
+                        {{ json_encode($error->getCustomData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
+            <br>
+            <hr>
+        @endforeach
     </div>
 </body>
 

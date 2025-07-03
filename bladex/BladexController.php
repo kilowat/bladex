@@ -5,6 +5,9 @@ use Bitrix\Main\Engine\Controller;
 
 abstract class BladexController extends Controller
 {
+    public $debugView = 'errors.debug';
+    public $defaultErrorView = 'errors.default';
+
     public function __construct($request = null)
     {
         parent::__construct($request);
@@ -35,23 +38,15 @@ abstract class BladexController extends Controller
         }
     }
 
-    /**
-     * ГЛАВНЫЙ МЕТОД - переопределяем обработку исключений
-     */
-    protected function runProcessingException(\Exception $e)
+    public function finalizeResponse(\Bitrix\Main\Response $response)
     {
-        /*
-        $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
-        if (!empty($exceptionHandling['debug'])) {
-            $error = new \Bitrix\Main\Error(\Bitrix\Main\Diag\ExceptionHandlerFormatter::format($e));
-            $response = useView('errors.debug')->with('error', $error)->getResponse();
+        if (!$this->request->isJson() && !$this->request->isAjaxRequest() && !empty($this->getErrors())) {
+            $errors = $this->getErrors();
+            $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
+            $viewError = !empty($exceptionHandling['debug']) ? $this->debugView : $this->defaultErrorView;
+            $response = useView($viewError)->with('errors', $errors)->getResponse();
+            $response->setStatus(500);
+            $response->send();
         }
-
-        $response->setStatus(500);
-        $response->send();
-
-        parent::runProcessingException($e);
-        */
     }
-
 }
