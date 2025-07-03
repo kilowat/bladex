@@ -2,6 +2,8 @@
 namespace Bladex;
 
 use Bitrix\Main\Engine\Controller;
+use Exceptions\AppException;
+use Exceptions\AppExceptionHandler;
 
 abstract class BladexController extends Controller
 {
@@ -35,6 +37,16 @@ abstract class BladexController extends Controller
         if ($result instanceof View) {
 
             return $result->getResponse();
+        }
+    }
+
+    protected function runProcessingThrowable(\Throwable $throwable)
+    {
+        if ($throwable instanceof AppException) {
+            $handler = new AppExceptionHandler();
+            $handler->render($this->request, $throwable);
+        } else {
+            parent::runProcessingThrowable($throwable);
         }
     }
 
