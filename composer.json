@@ -10,9 +10,11 @@
     },
     "autoload": {
         "psr-4": {
-            "": "app/",
+            "App\\": "app/",
             "Bladex\\": "bladex/",
-            "Views\\": "views/"
+            "Views\\": "views/",
+            "Controllers\\": "controllers/",
+            "Widgets\\": "widgets"
         }
     },
     "config": {

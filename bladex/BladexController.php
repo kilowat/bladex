@@ -2,13 +2,17 @@
 namespace Bladex;
 
 use Bitrix\Main\Engine\Controller;
-use Exceptions\AppException;
-use Exceptions\AppExceptionHandler;
+use Bitrix\Main\Error;
+use App\Exceptions\AppException;
+use App\Exceptions\AppExceptionHandler;
+use App\Exceptions\ExceptionHandler;
 
 abstract class BladexController extends Controller
 {
     public $debugView = 'errors.debug';
     public $defaultErrorView = 'errors.default';
+
+    private $errorHandler = null;
 
     public function __construct($request = null)
     {
@@ -39,19 +43,17 @@ abstract class BladexController extends Controller
             return $result->getResponse();
         }
     }
-    /*
+
     protected function runProcessingThrowable(\Throwable $throwable)
     {
-        if ($throwable instanceof AppException) {
-            $handler = new AppExceptionHandler($this);
-            $handler->runProcessingThrowable($throwable);
-        } else {
-            parent::runProcessingThrowable($throwable);
-        }
+        ExceptionHandler::handle($throwable);
     }
-    */
+
+
     public function finalizeResponse(\Bitrix\Main\Response $response)
     {
+        /*
+        //for default error
         if (!$this->request->isJson() && !$this->request->isAjaxRequest() && !empty($this->getErrors())) {
             $errors = $this->getErrors();
             $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
@@ -60,5 +62,7 @@ abstract class BladexController extends Controller
             $response->setStatus(500);
             $response->send();
         }
+        */
     }
+
 }

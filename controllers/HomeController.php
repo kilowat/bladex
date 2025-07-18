@@ -3,7 +3,7 @@ namespace Controllers;
 
 use Bitrix\Main\HttpRequest;
 use Exception;
-use Services\DataBaseService;
+use App\Services\DataBaseService;
 use DI\Attribute\Inject;
 use Requests\NewsGetRequest;
 class HomeController extends BaseController

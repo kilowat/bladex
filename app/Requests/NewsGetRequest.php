@@ -1,6 +1,6 @@
 <?php
 
-namespace Requests;
+namespace App\Requests;
 
 use Bitrix\Main\HttpRequest;
 
