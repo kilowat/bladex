@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\Renderers\RendererFactory;
+use App\Exceptions\Reports\ErrorReportFactory;
 use Throwable;
 
 
@@ -12,7 +12,14 @@ class ExceptionHandler
 
     public static function handle(Throwable $exception): void
     {
-        $renderer = RendererFactory::create();
-        $renderer->render($exception);
+        $appException = $exception instanceof AppException ? $exception : self::getAppException($exception);
+        $report = ErrorReportFactory::create();
+        $report->render($appException);
+    }
+
+
+    private static function getAppException(Throwable $exception)
+    {
+        return new AppException(AppError::INTERNAL_ERROR, [], $exception);
     }
 }

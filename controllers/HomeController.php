@@ -2,6 +2,7 @@
 namespace Controllers;
 
 use Bitrix\Main\HttpRequest;
+use Bitrix\Main\Error;
 use Exception;
 use App\Services\DataBaseService;
 use DI\Attribute\Inject;
@@ -19,6 +20,8 @@ class HomeController extends BaseController
         $arr = $this->request->getJsonList()->toArray();
 
         throw new Exception('test');
+
+
         return useView('home.index')->with(['result' => $result]);
     }
 }

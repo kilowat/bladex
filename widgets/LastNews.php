@@ -2,7 +2,7 @@
 
 namespace Widgets;
 
-use Services\DataBaseService;
+use App\Services\DataBaseService;
 use Bladex\View;
 use Bladex\Widget;
 
