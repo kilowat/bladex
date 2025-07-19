@@ -10,7 +10,7 @@ use Illuminate\View\FileViewFinder;
 use Illuminate\Events\Dispatcher;
 use Bitrix\Main\HttpResponse;
 use Bitrix\Main\Config\Configuration;
-
+use Bitrix\Main\Application;
 class BladeRenderer
 {
     private static ?self $instance = null;
@@ -58,8 +58,8 @@ class BladeRenderer
     {
         try {
             $html = $this->viewFactory->make($view, $data)->render();
-
-            return (new HttpResponse())
+            $response = Application::getInstance()->getContext()->getResponse();
+            return $response
                 ->setContent($html)
                 ->addHeader('Content-Type', 'text/html; charset=UTF-8');
 

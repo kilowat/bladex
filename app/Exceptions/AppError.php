@@ -2,12 +2,12 @@
 
 namespace App\Exceptions;
 
-enum AppError: int
+enum AppError: string
 {
-    case NOT_FOUND = 3;
-    case FORBIDDEN = 2;
-    case VALIDATION_FAILED = 1;
-    case INTERNAL_ERROR = 0;
+    case NOT_FOUND = 'not_found';
+    case FORBIDDEN = 'forbidden';
+    case VALIDATION_FAILED = 'validation_failed';
+    case INTERNAL_ERROR = 'internal_error';
 
     public function status(): int
     {
@@ -28,4 +28,6 @@ enum AppError: int
             self::INTERNAL_ERROR => 'Internal server error.',
         };
     }
+
+
 }

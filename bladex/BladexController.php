@@ -1,6 +1,7 @@
 <?
 namespace Bladex;
 
+use Bitrix\Main\Application;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Error;
 use App\Exceptions\AppException;
@@ -38,6 +39,8 @@ abstract class BladexController extends Controller
 
     protected function processAfterAction(\Bitrix\Main\Engine\Action $action, $result)
     {
+        //var_dump(Application::getInstance()->getContext()->getResponse());
+        //die();
         if ($result instanceof View) {
 
             return $result->getResponse();
@@ -46,7 +49,9 @@ abstract class BladexController extends Controller
 
     protected function runProcessingThrowable(\Throwable $throwable)
     {
-        ExceptionHandler::handle($throwable);
+        //parent::runProcessingThrowable($throwable);
+
+        //ExceptionHandler::handle($throwable);
     }
 
 
