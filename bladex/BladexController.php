@@ -15,13 +15,10 @@ abstract class BladexController extends Controller
 
     private $errorHandler = null;
 
-    public function __construct($request = null)
+    public function init()
     {
-        parent::__construct($request);
-
-        // Получаем контейнер
+        parent::init();
         $container = \Bladex\ContainerFactory::getContainer();
-
         $container->injectOn($this);
     }
 
@@ -39,8 +36,8 @@ abstract class BladexController extends Controller
 
     protected function processAfterAction(\Bitrix\Main\Engine\Action $action, $result)
     {
-        //var_dump(Application::getInstance()->getContext()->getResponse());
-        //die();
+        var_dump(Application::getInstance()->getContext()->getResponse());
+        die();
         if ($result instanceof View) {
 
             return $result->getResponse();
@@ -49,9 +46,7 @@ abstract class BladexController extends Controller
 
     protected function runProcessingThrowable(\Throwable $throwable)
     {
-        //parent::runProcessingThrowable($throwable);
-
-        //ExceptionHandler::handle($throwable);
+        parent::runProcessingThrowable($throwable);
     }
 
 
