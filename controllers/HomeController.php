@@ -21,7 +21,7 @@ class HomeController extends BaseController
     {
         $result = $data->getData();
         $arr = $this->request->getJsonList()->toArray();
-        return $this->showError(AppError::NOT_FOUND);
+
         return useView('home.index')->with(['result' => $result]);
     }
 }

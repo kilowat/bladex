@@ -13,7 +13,6 @@ use Exception;
 abstract class BladexController extends Controller
 {
     public $debugView = 'errors.debug';
-    public $defaultErrorView = 'errors.default';
 
     private $errorHandler = null;
 
@@ -32,15 +31,26 @@ abstract class BladexController extends Controller
         }
     }
 
+    protected function runProcessingThrowable(\Throwable $throwable)
+    {
+        if ($throwable instanceof AppException) {
+            $this->addError(new Error($throwable->error->message(), $throwable->error->value, $throwable->customData));
+        } else {
+            parent::runProcessingThrowable($throwable);
+        }
+    }
+
+
     public function finalizeResponse(\Bitrix\Main\Response $response)
     {
         if (!empty($this->getErrors())) {
             $errors = $this->getErrors();
+            $firstError = $errors[0];
+            $appError = AppError::tryFrom($firstError->getCode());
             $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
-            $viewError = !empty($exceptionHandling['debug']) ? $this->debugView : $this->defaultErrorView;
-            $currentResponse = Application::getInstance()->getContext()->getResponse();
-            $finalResponse = !$this->request->isJson() ? useView($viewError)->with('errors', $errors)->getResponse() : $currentResponse;
-            $finalResponse->setStatus($finalResponse->getStatus() == 0 ? 500 : $finalResponse->getStatus());
+            $viewError = !empty($exceptionHandling['debug']) && $appError == null ? $this->debugView : $appError->view();
+            $finalResponse = !$this->request->isJson() ? useView($viewError)->with('errors', $errors)->getResponse() : $response;
+            $finalResponse->setStatus($finalResponse->getStatus() == 0 ? $appError?->status() ?? 500 : $finalResponse->getStatus());
             $finalResponse->send();
         }
     }
