@@ -21,11 +21,7 @@ class HomeController extends BaseController
     {
         $result = $data->getData();
         $arr = $this->request->getJsonList()->toArray();
-        throw new AppException(AppError::INTERNAL_ERROR);
-        throw new SystemException('test', 400);
-        //$this->addError(new Error('test'));
-        //$this->runProcessingIfUserNotAuthorized();
-
+        return $this->showError(AppError::NOT_FOUND);
         return useView('home.index')->with(['result' => $result]);
     }
 }

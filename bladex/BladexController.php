@@ -1,12 +1,14 @@
 <?
 namespace Bladex;
 
+use App\Exceptions\AppError;
 use Bitrix\Main\Application;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Error;
 use App\Exceptions\AppException;
 use App\Exceptions\AppExceptionHandler;
 use App\Exceptions\ExceptionHandler;
+use Exception;
 
 abstract class BladexController extends Controller
 {
@@ -22,47 +24,34 @@ abstract class BladexController extends Controller
         $container->injectOn($this);
     }
 
-    public function runAction($actionName, array $parameters = [])
-    {
-        $method = $actionName . 'Action';
-
-        if (!method_exists($this, $method)) {
-            throw new \RuntimeException("Метод действия {$method} не найден в " . static::class);
-        }
-
-        return ContainerFactory::getContainer()->call([$this, $method], $parameters);
-
-    }
-
     protected function processAfterAction(\Bitrix\Main\Engine\Action $action, $result)
     {
-        var_dump(Application::getInstance()->getContext()->getResponse());
-        die();
         if ($result instanceof View) {
 
             return $result->getResponse();
         }
     }
 
-    protected function runProcessingThrowable(\Throwable $throwable)
-    {
-        parent::runProcessingThrowable($throwable);
-    }
-
-
     public function finalizeResponse(\Bitrix\Main\Response $response)
     {
-        /*
-        //for default error
-        if (!$this->request->isJson() && !$this->request->isAjaxRequest() && !empty($this->getErrors())) {
+        if (!empty($this->getErrors())) {
             $errors = $this->getErrors();
             $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
             $viewError = !empty($exceptionHandling['debug']) ? $this->debugView : $this->defaultErrorView;
-            $response = useView($viewError)->with('errors', $errors)->getResponse();
-            $response->setStatus(500);
-            $response->send();
+            $currentResponse = Application::getInstance()->getContext()->getResponse();
+            $finalResponse = !$this->request->isJson() ? useView($viewError)->with('errors', $errors)->getResponse() : $currentResponse;
+            $finalResponse->setStatus($finalResponse->getStatus() == 0 ? 500 : $finalResponse->getStatus());
+            $finalResponse->send();
         }
-        */
     }
 
+    protected function showError(AppError $error, $customData = [])
+    {
+        $this->addError(new Error($error->message(), $error->value, $customData));
+        $currentResponse = Application::getInstance()->getContext()->getResponse();
+
+        $finalResponse = !$this->request->isJson() ? useView($error->view())->with('errors', $this->getErrors())->getResponse() : $currentResponse;
+
+        return $finalResponse->setStatus($error->status());
+    }
 }
