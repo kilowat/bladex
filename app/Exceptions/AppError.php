@@ -36,4 +36,10 @@ enum AppError: string
         };
     }
 
+    public function shouldToLog()
+    {
+        return match ($this) {
+            default => false,
+        };
+    }
 }

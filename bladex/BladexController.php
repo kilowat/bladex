@@ -14,8 +14,6 @@ abstract class BladexController extends Controller
 {
     public $debugView = 'errors.debug';
 
-    private $errorHandler = null;
-
     public function init()
     {
         parent::init();
@@ -34,12 +32,26 @@ abstract class BladexController extends Controller
     protected function runProcessingThrowable(\Throwable $throwable)
     {
         if ($throwable instanceof AppException) {
-            $this->addError(new Error($throwable->error->message(), $throwable->error->value, $throwable->customData));
+            $this->addError(
+                new Error(
+                    $throwable->error->message(),
+                    $throwable->error->value,
+                    $throwable->customData
+                )
+            );
         } else {
             parent::runProcessingThrowable($throwable);
         }
     }
 
+
+    protected function writeToLogException(\Throwable $e)
+    {
+        if ($e instanceof AppException && !$e->error->shouldToLog()) {
+            return;
+        }
+        parent::writeToLogException($e);
+    }
 
     public function finalizeResponse(\Bitrix\Main\Response $response)
     {
@@ -53,15 +65,5 @@ abstract class BladexController extends Controller
             $finalResponse->setStatus($finalResponse->getStatus() == 0 ? $appError?->status() ?? 500 : $finalResponse->getStatus());
             $finalResponse->send();
         }
-    }
-
-    protected function showError(AppError $error, $customData = [])
-    {
-        $this->addError(new Error($error->message(), $error->value, $customData));
-        $currentResponse = Application::getInstance()->getContext()->getResponse();
-
-        $finalResponse = !$this->request->isJson() ? useView($error->view())->with('errors', $this->getErrors())->getResponse() : $currentResponse;
-
-        return $finalResponse->setStatus($error->status());
     }
 }
