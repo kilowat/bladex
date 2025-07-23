@@ -1,5 +1,5 @@
-@css('assets/app.css')
-@js('assets/app.js')
+@useCss('assets/app.css')
+@useJs('assets/app.js')
 
 <!DOCTYPE html>
 <html lang="ru">

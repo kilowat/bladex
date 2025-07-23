@@ -2,8 +2,7 @@
 
 use Bitrix\Main\Application;
 use Bitrix\Main\EventManager;
-use Bitrix\Main\Loader;
-use Bitrix\Main\Engine\CurrentUser;
+
 
 EventManager::getInstance()->addEventHandler('main', 'OnProlog', function () {
     global $USER;

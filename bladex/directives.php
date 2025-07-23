@@ -1,26 +1,12 @@
 <?php
 return [
     // Подключить CSS
-    'css' => function ($expression) {
-        return <<<PHP
-    <?php
-        \$__paths = is_array({$expression}) ? {$expression} : [{$expression}];
-        foreach (\$__paths as \$__path) {
-            \Bitrix\Main\Page\Asset::getInstance()->addCss('/' . ltrim(trim(\$__path, "'\""), '/'));
-        }
-    ?>
-    PHP;
+    'useCss' => function ($expression) {
+        return "<?php useCss($expression); ?>";
     },
 
-    'js' => function ($expression) {
-        return <<<PHP
-    <?php
-        \$__paths = is_array({$expression}) ? {$expression} : [{$expression}];
-        foreach (\$__paths as \$__path) {
-            \Bitrix\Main\Page\Asset::getInstance()->addJs('/' . ltrim(trim(\$__path, "'\""), '/'));
-        }
-    ?>
-    PHP;
+    'useJs' => function ($expression) {
+        return "<?php useJs($expression); ?>";
     },
 
     // Вывести все стили

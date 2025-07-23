@@ -19,6 +19,22 @@ function useContainer(): DI\Container
 
 }
 
+function useCss($paths)
+{
+    $__paths = is_array($paths) ? $paths : [$paths];
+    foreach ($__paths as $path) {
+        \Bitrix\Main\Page\Asset::getInstance()->addCss('/' . ltrim(trim($path, "\\"), '/'));
+    }
+}
+
+function useJs($paths)
+{
+    $__paths = is_array($paths) ? $paths : [$paths];
+    foreach ($__paths as $path) {
+        \Bitrix\Main\Page\Asset::getInstance()->addJs('/' . ltrim(trim($path, "\\"), '/'));
+    }
+}
+
 function useAsset(string $filePath, bool|string $domainOption = true): string|false
 {
     $fullPath = useBaseDir($filePath);
