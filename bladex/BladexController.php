@@ -39,9 +39,11 @@ abstract class BladexController extends Controller
                     $throwable->customData
                 )
             );
+
         } else {
             parent::runProcessingThrowable($throwable);
         }
+
     }
 
 
@@ -57,6 +59,7 @@ abstract class BladexController extends Controller
     {
         if (!empty($this->getErrors())) {
             $errors = $this->getErrors();
+
             $firstError = $errors[0];
             $appError = AppError::tryFrom($firstError->getCode());
             $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');

@@ -56,23 +56,15 @@ class BladeRenderer
      */
     public function getResponse(string $view, array $data = []): HttpResponse
     {
+
         try {
             $html = $this->viewFactory->make($view, $data)->render();
             $response = Application::getInstance()->getContext()->getResponse();
             return $response
                 ->setContent($html)
                 ->addHeader('Content-Type', 'text/html; charset=UTF-8');
-
-        } catch (\Exception $e) {
-            $this->logError($e, $view, $data);
-
-            if ($this->isDebugMode()) {
-                return (new HttpResponse())
-                    ->setContent($this->renderErrorPage($e, $view, $data))
-                    ->setStatus(500);
-            }
-
-            throw $e;
+        } catch (\Illuminate\View\ViewException $e) {
+            throw $e->getPrevious() ?? $e; // пробрасываем оригинальное исключение
         }
     }
 

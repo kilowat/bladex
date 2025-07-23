@@ -2,9 +2,12 @@
 
 namespace Widgets;
 
+use App\Exceptions\AppError;
+use App\Exceptions\AppException;
 use App\Services\DataBaseService;
 use Bladex\View;
 use Bladex\Widget;
+use Exception;
 
 class LastNews extends Widget
 {

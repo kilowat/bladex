@@ -1,5 +1,7 @@
 <?php
 namespace Controllers;
+use App\Exceptions\AppError;
+use App\Exceptions\AppException;
 use App\Services\DataBaseService;
 use DI\Attribute\Inject;
 
