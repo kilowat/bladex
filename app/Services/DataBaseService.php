@@ -7,8 +7,8 @@ class DataBaseService
     {
 
     }
-    public function getData()
+    public function getSiteName()
     {
-        return ['data'];
+        return 'My site name';
     }
 }

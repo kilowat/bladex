@@ -7,4 +7,5 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/test', function () {
         return 'test';
     })->name('test');
+    $routes->get('/filter', [Controllers\CatalogController::class, 'getFilterData'])->name('home');
 };
