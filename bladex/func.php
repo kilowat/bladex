@@ -19,6 +19,20 @@ function useContainer(): DI\Container
 
 }
 
+function usedd(...$vars)
+{
+    echo '<style>pre {background: #f5f5f5; padding: 10px; border: 1px solid #ccc;}</style>';
+    echo '<pre>';
+    foreach ($vars as $var) {
+        if (function_exists('xdebug_var_dump')) {
+            xdebug_var_dump($var);
+        } else {
+            var_dump($var);
+        }
+    }
+    echo '</pre>';
+    die();
+}
 function useCss($paths)
 {
     $__paths = is_array($paths) ? $paths : [$paths];
