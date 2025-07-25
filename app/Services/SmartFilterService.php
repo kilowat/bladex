@@ -26,9 +26,9 @@ class SmartFilterService
             return $this;
 
         $this->exec($sectionCode, $prefilter);
-        global $arrFilter;
+        global ${$this->arParams['FILTER_NAME']};
 
-        $filter = array_merge($arrFilter, $filter);
+        $filter = array_merge(${$this->arParams['FILTER_NAME']}, $filter);
         return $this;
     }
 
@@ -41,8 +41,10 @@ class SmartFilterService
         if ($sectionCode != null)
             $params['SECTION_CODE'] = $sectionCode;
 
-        if ($prefilter != null)
-            $params['PREFILTER_NAME'] = $prefilter;
+        if ($prefilter != null) {
+            global ${$this->arParams['PREFILTER_NAME']};
+            ${$this->arParams['PREFILTER_NAME']} = $prefilter;
+        }
 
         $this->cbSmartFilter->arParams = $params;
         $this->cbSmartFilter->executeComponent();
