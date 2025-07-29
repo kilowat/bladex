@@ -16,6 +16,6 @@ class HomeController extends BaseController
     {
         $siteName = $dataService->getSiteName();
 
-        return useView('pages.home')->with('siteName', $siteName);
+        return useView('pages.home.index')->with('siteName', $siteName);
     }
 }
