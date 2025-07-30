@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\AppException;
 use Bladex\View;
 
 function useView($view = ''): View
@@ -10,7 +11,6 @@ function useView($view = ''): View
 function useRoute($name, $parameters = []): string
 {
     return \Bitrix\Main\Application::getInstance()->getRouter()->route($name, $parameters);
-
 }
 
 function useContainer(): DI\Container

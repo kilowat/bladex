@@ -4,6 +4,11 @@ namespace Widgets;
 use Bladex\View;
 use Bladex\Widget;
 
+/**
+ * Пример вызова
+ * {!! Widgets\LastNews::make()->render() !!}
+ */
+
 class LastNews extends Widget
 {
     protected array $config = [
@@ -13,9 +18,9 @@ class LastNews extends Widget
     public function run(): View
     {
         $news = [
-            ['title' => $this->config['limit']],
+            ['limit' => $this->config['limit']],
         ];
 
-        return useView('last_news')->with('items', $news);
+        return useView('widgets.last_news')->with('items', $news);
     }
 }

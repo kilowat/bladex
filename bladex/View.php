@@ -45,6 +45,11 @@ class View
         return $this;
     }
 
+    public function exists(string $view)
+    {
+        return $this->renderer->exists($view);
+    }
+
     /**
      * Render view as string
      */
