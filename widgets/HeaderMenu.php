@@ -20,26 +20,6 @@ class HeaderMenu extends Widget
 
     public function render(): View|string
     {
-        /*
-        <nav class="header__menu">
-            <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
-                <li><a href="#">Women’s</a></li>
-                <li><a href="#">Men’s</a></li>
-                <li><a href="./shop.html">Shop</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="dropdown">
-                        <li><a href="./product-details.html">Product Details</a></li>
-                        <li><a href="./shop-cart.html">Shop Cart</a></li>
-                        <li><a href="./checkout.html">Checkout</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
-                    </ul>
-                </li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    */
         return Menu::new()
             ->wrap('nav', ['class' => 'header__menu'])
             ->add(Link::to(useRoute('home'), 'Home'))
@@ -57,6 +37,11 @@ class HeaderMenu extends Widget
             )
             ->add(Link::to('#', 'Blog'))
             ->add(Link::to('#', 'Contact'))
+            ->setActive(function (Link $link) {
+                if (str_contains($link->url(), '#'))
+                    return false;
+                return $link->url() == useCurrentRoute()->getUri();
+            })
             ->render();
     }
 }

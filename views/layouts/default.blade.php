@@ -39,8 +39,6 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    @include('ui.preloader')
 
     <!-- Offcanvas Menu Begin -->
     @include('ui.offcanvas-menu')

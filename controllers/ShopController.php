@@ -5,6 +5,6 @@ class ShopController extends BaseController
 {
     public function indexAction()
     {
-        return useView('shop.index');
+        return useView('pages.shop.index');
     }
 }

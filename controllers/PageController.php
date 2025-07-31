@@ -12,14 +12,13 @@ class PageController extends BaseController
         return useView('pages.home');
     }
 
-    public function showAction($page)
+    public function aboutAction()
     {
-        $view = str_replace('-', '_', $page);
+        return useView('pages.about');
+    }
 
-        if (useView()->exists($view)) {
-            return useView($view);
-        }
-
+    public function defaultAction()
+    {
         throw new AppException(AppError::NOT_FOUND);
     }
 }

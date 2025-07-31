@@ -8,6 +8,11 @@ function useView($view = ''): View
     return \Bladex\BladeRenderer::getInstance()->make($view);
 }
 
+function useCurrentRoute()
+{
+    return \Bitrix\Main\Application::getInstance()->getCurrentRoute();
+}
+
 function useRoute($name, $parameters = []): string
 {
     return \Bitrix\Main\Application::getInstance()->getRouter()->route($name, $parameters);
