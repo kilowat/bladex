@@ -38,10 +38,5 @@ abstract class Widget
         return array_merge($this->config, $filteredConfig);
     }
 
-    abstract public function run(): View;
-
-    public function render(): string
-    {
-        return $this->run()->getHtml();
-    }
+    abstract public function render(): View|string;
 }

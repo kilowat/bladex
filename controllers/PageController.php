@@ -9,7 +9,7 @@ class PageController extends BaseController
 {
     public function indexAction()
     {
-        return useView('home.index');
+        return useView('pages.home');
     }
 
     public function showAction($page)
