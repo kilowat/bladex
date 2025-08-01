@@ -1,7 +1,6 @@
-index.php, 404.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+index.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
 
-settings.php
-
+### settings.php
 'routing' => ['value' => [
         'config' => ['web.php']
 ]], 
@@ -21,15 +20,13 @@ settings.php
         }
     }
 
-в init.php 
-
+### init.php 
 require_once realpath('/var/www/myapp/bootstrap.php');
-
-подключения роутов
 return include '/var/www/myapp/routes_inc.php';
 
 ##Для Bitrixdoc
 пробросить volumes в php и nginx ./www/myapp:/var/www/myapp
+###404.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
 
 ###симилинк на ассеты
 ln -s /var/www/myapp/assets /var/www/bitrix/assets

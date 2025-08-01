@@ -14,12 +14,12 @@ use Spatie\Menu\Link;
 
 class Breadcrumbs extends Widget
 {
-
     public function render(): View|string
     {
-        $breadcrumbs = useContainer()->get('Breadcrumbs');
-        $res = $breadcrumbs->generate()->get();
-        return useView('ui.breadcrumbs');
+        $items = \Bladex\Breadcrumbs::generate(
+            useCurrentRoute()->getOptions()->getFullName(),
+        )->get();
 
+        return useView('ui.breadcrumbs')->with('items', $items);
     }
 }
