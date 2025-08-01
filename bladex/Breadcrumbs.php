@@ -17,13 +17,11 @@ class Breadcrumbs
         $instance = new self();
 
         if (!isset(static::$routes[$name])) {
-            throw new \RuntimeException("Breadcrumb route [{$name}] not registered.");
+            // просто возвращаем пустой экземпляр
+            return $instance;
         }
 
-        $callback = static::$routes[$name];
-
-        // Call closure with $instance and params
-        $callback($instance, ...$params);
+        call_user_func(static::$routes[$name], $instance, ...$params);
 
         return $instance;
     }
