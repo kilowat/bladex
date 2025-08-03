@@ -9,7 +9,6 @@ use Illuminate\View\Factory;
 use Illuminate\View\FileViewFinder;
 use Illuminate\Events\Dispatcher;
 use Bitrix\Main\HttpResponse;
-use Bitrix\Main\Config\Configuration;
 use Bitrix\Main\Application;
 class BladeRenderer
 {
@@ -43,17 +42,11 @@ class BladeRenderer
         return self::$instance ??= new self();
     }
 
-    /**
-     * Create view instance for fluent API
-     */
     public function make(string $view): View
     {
         return new View($this, $view);
     }
 
-    /**
-     * Render view and return HttpResponse
-     */
     public function getResponse(string $view, array $data = []): HttpResponse
     {
 
@@ -68,50 +61,31 @@ class BladeRenderer
         }
     }
 
-    /**
-     * Render view and return HTML string
-     */
     public function getHtml(string $view, array $data = []): string
     {
         return $this->viewFactory->make($view, $data)->render();
     }
-
-    /**
-     * Check if view exists
-     */
     public function exists(string $view): bool
     {
         return $this->viewFactory->exists($view);
     }
 
-    /**
-     * Share data across all views
-     */
     public function share(string|array $key, mixed $value = null): self
     {
         $this->viewFactory->share($key, $value);
         return $this;
     }
 
-    /**
-     * Get view factory instance
-     */
     public function getViewFactory(): Factory
     {
         return $this->viewFactory;
     }
 
-    /**
-     * Get blade compiler instance
-     */
     public function getCompiler(): BladeCompiler
     {
         return $this->compiler;
     }
 
-    /**
-     * Clear compiled view cache
-     */
     public function clearCache(): bool
     {
         $filesystem = new Filesystem();
@@ -128,9 +102,7 @@ class BladeRenderer
         }
     }
 
-    /**
-     * Add custom directive
-     */
+
     public function directive(string $name, callable $callback): self
     {
         $this->compiler->directive($name, $callback);
@@ -196,56 +168,5 @@ class BladeRenderer
     private function getConfiguration(): array
     {
         return useConfig('blade');
-    }
-
-    private function isDebugMode(): bool
-    {
-        try {
-            return Configuration::getValue('exception_handling')['debug'] === true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    private function logError(\Exception $e, string $view, array $data): void
-    {
-        try {
-            \Bitrix\Main\Diag\Debug::writeToFile([
-                'message' => 'Blade render error',
-                'view' => $view,
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ], '', '/local/logs/blade_errors.log');
-        } catch (\Exception $logException) {
-            // Если не удается записать в лог, игнорируем
-        }
-    }
-
-    private function renderErrorPage(\Exception $e, string $view, array $data): string
-    {
-        return sprintf(
-            '<div style="padding: 20px; font-family: monospace; background: #f8f8f8; border: 1px solid #ddd;">
-                <h2 style="color: #d32f2f;">Blade Template Error</h2>
-                <p><strong>View:</strong> %s</p>
-                <p><strong>Message:</strong> %s</p>
-                <p><strong>File:</strong> %s:%d</p>
-                <details>
-                    <summary>Stack Trace</summary>
-                    <pre>%s</pre>
-                </details>
-                <details>
-                    <summary>Template Data</summary>
-                    <pre>%s</pre>
-                </details>
-            </div>',
-            htmlspecialchars($view),
-            htmlspecialchars($e->getMessage()),
-            htmlspecialchars($e->getFile()),
-            $e->getLine(),
-            htmlspecialchars($e->getTraceAsString()),
-            htmlspecialchars(print_r($data, true))
-        );
     }
 }

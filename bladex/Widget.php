@@ -1,16 +1,9 @@
 <?php
 namespace Bladex;
 
-use Bitrix\Main\HttpResponse;
-
 abstract class Widget
 {
     protected array $config = [];
-
-    public function __construct()
-    {
-        // Внедрение зависимостей через контейнер
-    }
 
     public static function make(array $config = []): static
     {

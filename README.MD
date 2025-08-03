@@ -4,14 +4,18 @@ index.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/inc
 'routing' => ['value' => [
         'config' => ['web.php']
 ]], 
-Это для работы bitrix констолей указываем полный путь до нашего композер файла
+
+#### Решения конфилкта bitrix/composer.json и myapp/composer.json
+Это для работы bitrix консолей указываем полный путь до нашего композер файла.
+##### settings.php
 'composer' => [
     'value' => [
         'config_path' => 'var/www/myapp/composer.json'
     ]
 ],
 
-в composer.json нужно указать путь до bitrix composer чтобы не было конфилктов пример:
+### myapp/composer.json 
+нужно указать путь до bitrix composer чтобы не было конфилктов пример:
     "extra": {
         "merge-plugin": {
             "require": [
@@ -22,11 +26,15 @@ index.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/inc
 
 ### init.php 
 require_once realpath('/var/www/myapp/bootstrap.php');
+
+### bitrix/routes/web.php
 return include '/var/www/myapp/routes_inc.php';
 
-##Для Bitrixdoc
-пробросить volumes в php и nginx ./www/myapp:/var/www/myapp
-###404.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
-
-###симилинк на ассеты
+### симилинк на ассеты
+Пробросить assets через ссылку в публичную директорию где расположен битрикс.
 ln -s /var/www/myapp/assets /var/www/bitrix/assets
+
+## Для Bitrixdoc
+пробросить volumes в php и nginx ./www/myapp:/var/www/myapp
+### 404.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+

@@ -27,6 +27,7 @@ abstract class BladexController extends Controller
 
             return $result->getResponse();
         }
+        return parent::processAfterAction($action, $result);
     }
 
     protected function runProcessingThrowable(\Throwable $throwable)
