@@ -11,8 +11,8 @@ class View
 
     public function __construct(BladeRenderer $renderer, string $view)
     {
-        $this->renderer = $renderer;
         $this->view = $view;
+        $this->renderer = $renderer;
     }
 
     /**
@@ -45,9 +45,9 @@ class View
         return $this;
     }
 
-    public function exists(string $view)
+    public function exists()
     {
-        return $this->renderer->exists($view);
+        return $this->renderer->exists($this->view);
     }
 
     /**
