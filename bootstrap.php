@@ -23,5 +23,3 @@ if (!$vendorPath || !file_exists($vendorPath . '/autoload.php')) {
 }
 
 require_once $vendorPath . '/autoload.php';
-
-require_once __DIR__ . '/bladex/events.php';

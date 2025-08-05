@@ -16,3 +16,27 @@ return function (RoutingConfigurator $routes) use ($routesConfig) {
         }
     }
 };
+
+/**
+ * other variant 
+ * 
+ * <?PHP
+
+use Bitrix\Main\Routing\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes) {
+    $routesConfig = include('config/routes.php');
+
+    foreach ($routesConfig as $route) {
+        $routeFile = dirname(__FILE__) . '/' . $route;
+        if (!file_exists($routeFile)) {
+            continue;
+        }
+
+        $closure = include $routeFile;
+        if ($closure instanceof Closure) {
+            $closure($routes);
+        }
+    }
+};
+ */

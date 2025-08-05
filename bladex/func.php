@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\AppException;
 use Bladex\View;
 
 function useView($view = ''): View

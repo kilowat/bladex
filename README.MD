@@ -1,48 +1,114 @@
+# Установка фреймворка с Bitrix
 
-## Установка
+## 📁 Структура проекта
 
-### в www/public
-index.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+Пример структуры директорий:
 
-### bitrix/settings.php
-'routing' => ['value' => [
-        'config' => ['web.php']
-]], 
+```
+project-root/
+├── public/             # Публичная директория с Bitrix
+│   └── index.php
+├── myapp/              # Ваша директория с фреймворком
+│   ├── composer.json
+│   └── routes_inc.php
+```
 
-### Скачать фрейморвк в директорию во вне public и переименовать его например myapp
+---
 
-### myapp/composer.json 
-нужно указать путь до bitrix composer чтобы не было конфилктов пример:
-    "extra": {
-        "merge-plugin": {
-            "require": [
-                "/var/www/bitrix/bitrix/composer-bx.json" <---- полный путь до bitrix
-            ]
-        }
-    }
+## 🔧 Шаг 1: Установка фреймворка
 
-#### Решения конфилкта bitrix/composer.json
-Это для работы bitrix консолей если нужно использовать указываем полный путь до нашего композер файла.
-##### bitrix/settings.php
-'composer' => [
-    'value' => [
-        'config_path' => 'var/www/myapp/composer.json'
+Скачайте фреймворк **вне директории `public/`**, чтобы отделить публичные и приватные файлы. Например:
+
+```bash
+git clone https://github.com.git:kilowat/bladex
+```
+
+---
+
+## 📦 Шаг 2: Настройка `composer.json`
+
+В `myapp/composer.json` укажите путь до `bitrix/composer-bx.json`, чтобы избежать конфликтов зависимостей:
+
+```json
+"extra": {
+  "merge-plugin": {
+    "require": [
+      "../public/bitrix/composer-bx.json"
     ]
-],
+  }
+}
 
-### init.php 
-require_once realpath('/var/www/myapp/bootstrap.php');
+```
+Установить зависимости:
 
-### bitrix/routes/web.php
-return include '/var/www/myapp/routes_inc.php';
+```bash
+cd myapp
+composer install
+```
 
-### симилинк на ассеты
-Пробросить assets через ссылку в публичную директорию где расположен битрикс.
+## 🧩 Шаг 3: Подключение маршрутизации Bitrix
+
+### 1. `public/index.php`
+
+Добавьте подключение роутинга:
+
+```php
+include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+```
+
+### 2. `bitrix/.settings.php`
+
+Добавьте конфигурацию роутинга:
+
+```php
+'routing' => ['value' => [
+    'config' => ['myapp.php']
+]],
+```
+
+### 3. `bitrix/routes/myapp.php`
+
+Пропишите подключение ваших маршрутов:
+
+```php
+return include '../myapp/routes_inc.php';
+```
+
+---
+
+## 🖼 Шаг 4: Проброс ассетов
+
+Создайте символическую ссылку для ассетов во внешней директории:
+
+```bash
 ln -s /var/www/myapp/assets /var/www/bitrix/public/assets
+```
 
-## Для Bitrixdoc
-Простое решение чтобы из коробки завелось в bitrixdoc 
-Пробросить volumes в docker-compose.yml в php и nginx ./www/myapp:/var/www/myapp
-B public файлах bitrix в 404.php прописать.
-404.php --> include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+Теперь ассеты будут доступны из публичной директории по пути `/assets`.
 
+---
+
+## 🐳 BitrixDoc из коробки и Docker
+
+Чтобы корректно работало в BitrixDoc:
+
+### 1. Проброс volume в `docker-compose.yml`
+
+```yaml
+services:
+  php:
+    volumes:
+      - ./www/myapp:/var/www/myapp
+
+  nginx:
+    volumes:
+      - ./www/myapp:/var/www/myapp
+```
+
+### 2. Обработка 404 в Bitrixdoc
+
+В файле `public/404.php` добавьте:
+
+```php
+include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
+```
