@@ -20,7 +20,7 @@ project-root/
 Скачайте фреймворк **вне директории `public/`**, чтобы отделить публичные и приватные файлы. Например:
 
 ```bash
-git clone https://github.com.git:kilowat/bladex
+git clone https://github.com/kilowat/bladex
 ```
 
 ---
