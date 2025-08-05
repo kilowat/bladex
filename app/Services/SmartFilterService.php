@@ -90,13 +90,3 @@ class SmartFilterService
         ];
     }
 }
-
-
-/*
-        \CBitrixComponent::includeComponentClass('bitrix:catalog.smart.filter');
-        $cbSmartFilter= new \CBitrixCatalogSmartFilter();
-        $cbSmartFilter->initComponent('bitrix:catalog.smart.filter');
-        $cbSmartFilter->arParams = ['IBLOCK_ID' => 2];
-        $cbSmartFilter->executeComponent();
-        $cbSmartFilter->arResult;
-*/
