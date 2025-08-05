@@ -50,7 +50,7 @@ composer install
 
 ### 1. `public/index.php`
 
-Добавьте подключение роутинга:
+Убрать весь код из файла и оставить только подключение роутинга:
 
 ```php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
