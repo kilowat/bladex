@@ -71,7 +71,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_i
 Пропишите подключение ваших маршрутов:
 
 ```php
-return include '../myapp/routes_inc.php';
+return include dirname($_SERVER['DOCUMENT_ROOT']) . '/myapp/routes_inc.php';
 ```
 
 ---

@@ -11,9 +11,6 @@ class ShopController extends BaseController
 {
     public function indexAction()
     {
-
-        // $staticHTMLCache = \Bitrix\Main\Data\StaticHTMLCache::getInstance();
-
         return useView('pages.shop.index');
     }
 }

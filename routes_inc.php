@@ -1,9 +1,10 @@
 <?PHP
 include 'bootstrap.php';
-$routesConfig = useConfig('routes');
+
 use Bitrix\Main\Routing\RoutingConfigurator;
 
-return function (RoutingConfigurator $routes) use ($routesConfig) {
+return function (RoutingConfigurator $routes) {
+    $routesConfig = useConfig('routes');
     foreach ($routesConfig as $route) {
         $routeFile = useBaseDir($route);
         if (!file_exists($routeFile)) {

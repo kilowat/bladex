@@ -9,6 +9,7 @@ class DataBaseService
     }
     public function getSiteName()
     {
+
         return 'My site name';
     }
 }
