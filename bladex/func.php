@@ -135,3 +135,8 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
 
     return $config[$key] ?? $default ?? null;
 }
+
+function useArrayNavHelper(array $data): Bladex\ArrayNavHelper
+{
+    return new Bladex\ArrayNavHelper($data);
+}
