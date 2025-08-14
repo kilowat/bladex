@@ -2,18 +2,30 @@
 namespace Controllers;
 
 use App\Repositories\CatalogRepository;
-use Bitrix\Main\Page\Frame;
-use Bitrix\Main\Web\Response\HtmlResponse;
-use Bitrix\Main\Context;
-use Bitrix\Main\Composite\Engine;
+use Bladex\Pagination;
 
 
 class ShopController extends BaseController
 {
     public function indexAction(CatalogRepository $catalogRepository)
     {
-        $products = $catalogRepository->getList();
 
-        return useView('pages.shop.index')->with('products', $products);
+        $pagination = new Pagination();
+        $pagination->initFromUri();
+        $pagination->setRecordCount(count(useFixture('products')));
+        $pagination->setPageSize(9);
+        $products = $catalogRepository->getProducts(
+            limit: $pagination->getLimit(),
+            offset: $pagination->getOffset()
+        );
+
+        $navData = $pagination->getNavigationData();
+
+        return useView('pages.shop.index')->with(
+            [
+                'products' => $products,
+                'navData' => $navData,
+            ]
+        );
     }
 }

@@ -100,4 +100,37 @@ return [
         'rating' => 5,
         'status' => 'available'
     ],
+    [
+        'id' => 10,
+        'code' => 'furry-hooded-parka',
+        'name' => 'Furry hooded parka',
+        'image' => '/assets/img/shop/shop-1.jpg',
+        'price' => 59.0,
+        'old_price' => null,
+        'label' => 'New',
+        'rating' => 5,
+        'status' => 'available'
+    ],
+    [
+        'id' => 11,
+        'code' => 'flowy-striped-skirt',
+        'name' => 'Flowy striped skirt',
+        'image' => '/assets/img/shop/shop-2.jpg',
+        'price' => 49.0,
+        'old_price' => null,
+        'label' => null,
+        'rating' => 5,
+        'status' => 'available'
+    ],
+    [
+        'id' => 12,
+        'code' => 'croc-effect-bag',
+        'name' => 'Croc-effect bag',
+        'image' => '/assets/img/shop/shop-3.jpg',
+        'price' => 59.0,
+        'old_price' => null,
+        'label' => null,
+        'rating' => 5,
+        'status' => 'available'
+    ],
 ];

@@ -16,7 +16,8 @@
                         @include('ui.smartfilter')
                     </div>
                 </div>
-                @include('ui.product_list', [...$products])
+                @include('ui.product_list', ['items' => $products])
+                @include('ui.pagination', ['navData' => $navData])
             </div>
         </div>
     </section>

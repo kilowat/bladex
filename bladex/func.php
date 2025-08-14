@@ -136,7 +136,7 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
     return $config[$key] ?? $default ?? null;
 }
 
-function useArrayNavHelper(array $data): Bladex\ArrayNavHelper
+function useFixture(string $name)
 {
-    return new Bladex\ArrayNavHelper($data);
+    return Bladex\Fixtures::get($name);
 }

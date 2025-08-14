@@ -5,18 +5,15 @@ namespace App\Repositories;
 class CatalogRepository
 {
 
-    public function getList(
-        int $page = 1,
-        int $perPage = 9,
+    public function getProducts(
+        int $offset = 1,
+        int $limit = 12,
         ?string $sortBy = null,
         string $direction = 'asc',
         array $filter = []
     ) {
-        $data = require(useBaseDir('fixtures/products.php'));
+        $products = useFixture('products');
 
-        return useArrayNavHelper($data)
-            ->sortBy($sortBy, $direction)
-            ->paginate($page, $perPage)
-            ->get();
+        return array_slice($products, $offset, $limit);
     }
 }

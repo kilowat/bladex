@@ -12,8 +12,8 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/about', [Controllers\PageController::class, 'about'])
         ->name('about');
 
-    $routes->get('/shop', [Controllers\ShopController::class, 'index'])
-        ->name('shop.index');
+    $routes->get('/shop/{page}', [Controllers\ShopController::class, 'index'])
+        ->name('shop.index')->default('page', 1);
 
     $routes->get('{path}', [Controllers\PageController::class, 'default'])
         ->name('default')
