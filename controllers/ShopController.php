@@ -12,7 +12,8 @@ class ShopController extends BaseController
 
         $pagination = new Pagination();
         $pagination->initFromUri();
-        $pagination->setRecordCount(count(useFixture('products')));
+        $recordsCount = count(useFixture('products'));
+        $pagination->setRecordCount($recordsCount);
         $pagination->setPageSize(9);
         $products = $catalogRepository->getProducts(
             limit: $pagination->getLimit(),

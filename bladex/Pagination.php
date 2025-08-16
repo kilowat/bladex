@@ -7,19 +7,25 @@ use Bitrix\Main\Web;
 class Pagination
 {
     protected $id;
-    protected $pageSizes = array();
-    protected $pageSize = 20;
+    protected $pageSizes;
+    protected $pageSize;
     protected $recordCount;
     protected $currentPage;
-    protected $allowAll = false;
-    protected $allRecords = false;
+    protected $allowAll;
+    protected $allRecords;
 
-    /**
-     * @param string $id Navigation identity like "nav-cars".
-     */
-    public function __construct(string $id = 'nav')
-    {
+    public function __construct(
+        string $id = 'nav',
+        array $pageSizes = [],
+        int $currentPage = 1,
+        bool $allowAll = false,
+        bool $allRecords = false,
+    ) {
         $this->id = $id;
+        $this->pageSizes = $pageSizes;
+        $this->currentPage = $currentPage;
+        $this->allowAll = $allowAll;
+        $this->allRecords = $allRecords;
     }
 
     /**
