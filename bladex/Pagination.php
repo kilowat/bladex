@@ -33,13 +33,27 @@ class Pagination
      *
      * @return void
      */
-    public function initFromUri()
-    {
+    public static function initFromUri(
+        int $recordCount,
+        int $defaultPageSize = 9,
+        array $defaultPageSizes = [],
+        bool $allowAll = false,
+        bool $allRecords = false,
+        string $id = 'nav',
+    ): self {
         $navParams = [];
-
         $request = \Bitrix\Main\Context::getCurrent()->getRequest();
+        $pagination = new self(
+            $id,
+            $defaultPageSizes,
+            1,
+            $allowAll,
+            $allRecords
+        );
 
-        if (($value = $request->getQuery($this->id)) !== null) {
+        $pagination->setRecordCount($recordCount);
+
+        if (($value = $request->getQuery($pagination->id)) !== null) {
             //parameters are in the QUERY_STRING
             $params = explode("-", $value);
             for ($i = 0, $n = count($params); $i < $n; $i += 2) {
@@ -48,7 +62,7 @@ class Pagination
         } else {
             //probably parametrs are in the SEF URI
             $matches = [];
-            if (preg_match("'/" . preg_quote($this->id, "'") . "/page-([\\d]+|all)+(/size-([\\d]+))?'", $request->getRequestUri(), $matches)) {
+            if (preg_match("'/" . preg_quote($pagination->id, "'") . "/page-([\\d]+|all)+(/size-([\\d]+))?'", $request->getRequestUri(), $matches)) {
                 $navParams["page"] = $matches[1];
                 if (isset($matches[3])) {
                     $navParams["size"] = $matches[3];
@@ -58,21 +72,26 @@ class Pagination
 
         if (isset($navParams["size"])) {
             //set page size from user request
-            if (in_array($navParams["size"], $this->pageSizes)) {
-                $this->setPageSize((int) $navParams["size"]);
+            if (in_array($navParams["size"], $pagination->pageSizes)) {
+                $pagination->setPageSize((int) $navParams["size"]);
             }
+        } else {
+            $pagination->setPageSize($defaultPageSize);
         }
 
         if (isset($navParams["page"])) {
-            if ($navParams["page"] == "all" && $this->allowAll == true) {
+            if ($navParams["page"] == "all" && $pagination->allowAll == true) {
                 //show all records in one page
-                $this->allRecords = true;
+                $pagination->allowAllRecords(true);
             } else {
                 //set current page within boundaries
                 $currentPage = (int) $navParams["page"];
-                $this->setCurrentPage($currentPage);
+                $pagination->setCurrentPage($currentPage);
             }
+        } else {
+            $pagination->allowAllRecords($allRecords);
         }
+        return $pagination;
     }
 
     /**

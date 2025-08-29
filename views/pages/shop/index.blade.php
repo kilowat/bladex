@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 @include('ui.product_list', ['items' => $products])
-                @include('ui.pagination', ['navData' => $navData])
+                @widget('PageNavigation', ['pagination' => $pagination])
             </div>
         </div>
     </section>
