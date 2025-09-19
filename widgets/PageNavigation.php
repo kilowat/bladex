@@ -5,13 +5,6 @@ use Bladex\Pagination;
 use Bladex\View;
 use Bladex\Widget;
 
-
-/**
- * Пример вызова
- * @widget('LastNews')
- * {!! Widgets\LastNews::make()->render() !!}
- */
-
 class PageNavigation extends Widget
 {
     protected array $config = [

@@ -6,12 +6,6 @@ use Bladex\Widget;
 use Spatie\Menu\Menu;
 use Spatie\Menu\Link;
 
-/**
- * Пример вызова
- * @widget('LastNews')
- * {!! Widgets\LastNews::make()->render() !!}
- */
-
 class HeaderMenu extends Widget
 {
     protected array $config = [

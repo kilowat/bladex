@@ -5,7 +5,6 @@ use App\Exceptions\AppException;
 use Bitrix\Main\Routing\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes) {
-
     $routes->get('/', [Controllers\PageController::class, 'index'])
         ->name('home');
 

@@ -112,3 +112,5 @@ services:
 ```php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/routing_index.php');
 ```
+
+$ tar --strip-components=1 -zxvf start_encode.tar.gz 
