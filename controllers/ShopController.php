@@ -7,7 +7,7 @@ use Bladex\Pagination;
 
 class ShopController extends BaseController
 {
-    public function indexAction(CatalogRepository $catalogRepository)
+    public function indexAction(CatalogRepository $catalogRepository, $section = null)
     {
         $recordsCount = count(useFixture('products'));
         $pagination = Pagination::initFromUri($recordsCount);
