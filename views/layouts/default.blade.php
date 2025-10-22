@@ -47,6 +47,9 @@
     <!-- Header Section Begin -->
     @include('ui.header')
     <!-- Header Section End -->
+    @unless(!empty($hideBreadcrumbs) && $hideBreadcrumbs === true)
+        @widget('breadcrumbs')
+    @endunless
 
     @yield('content');
 

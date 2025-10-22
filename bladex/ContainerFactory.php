@@ -12,7 +12,7 @@ class ContainerFactory
         if (self::$container === null) {
             $builder = new \DI\ContainerBuilder();
             $builder->useAttributes(true);
-            $builder->addDefinitions(useBaseDir('config/di.php'));
+            $builder->addDefinitions(baseDir('config/di.php'));
             self::$container = $builder->build();
         }
 

@@ -2,42 +2,38 @@
 
 use Bladex\View;
 
-function useView($view = ''): View
+function view($view = ''): View
 {
     return \Bladex\BladeRenderer::getInstance()->make($view);
 }
 
-function useCurrentRoute()
+function getCurrentRoute()
 {
     return \Bitrix\Main\Application::getInstance()->getCurrentRoute();
 }
 
-function useRoute($name, $parameters = []): string
+function getRoute($name, $parameters = []): string
 {
     return \Bitrix\Main\Application::getInstance()->getRouter()->route($name, $parameters);
 }
 
-function useContainer(): DI\Container
+function getContainer(): DI\Container
 {
     return \Bladex\ContainerFactory::getContainer();
 
 }
 
-function usedd(...$vars)
+function dd(...$vars)
 {
     echo '<style>pre {background: #f5f5f5; padding: 10px; border: 1px solid #ccc;}</style>';
     echo '<pre>';
     foreach ($vars as $var) {
-        if (function_exists('xdebug_var_dump')) {
-            xdebug_var_dump($var);
-        } else {
-            var_dump($var);
-        }
+        var_dump($var);
     }
     echo '</pre>';
     die();
 }
-function useCss($paths)
+function addCss($paths)
 {
     $__paths = is_array($paths) ? $paths : [$paths];
     foreach ($__paths as $path) {
@@ -45,7 +41,7 @@ function useCss($paths)
     }
 }
 
-function useJs($paths)
+function addJs($paths)
 {
     $__paths = is_array($paths) ? $paths : [$paths];
     foreach ($__paths as $path) {
@@ -53,9 +49,9 @@ function useJs($paths)
     }
 }
 
-function useAsset(string $filePath, bool|string $domainOption = true): string|false
+function asset(string $filePath, bool|string $domainOption = true): string|false
 {
-    $fullPath = useBaseDir($filePath);
+    $fullPath = baseDir($filePath);
 
     if (!file_exists($fullPath)) {
         return false;
@@ -78,7 +74,7 @@ function useAsset(string $filePath, bool|string $domainOption = true): string|fa
     return rtrim($domainOption, '/') . $versionedPath;
 }
 
-function useBaseDir($path = '')
+function baseDir($path = '')
 {
     $path = !empty($path) ? '/' . $path : $path;
     return dirname(__FILE__, 2) . $path;
@@ -93,7 +89,7 @@ function useBaseDir($path = '')
  * @param mixed $default Значение по умолчанию, если ключ не найден
  * @return mixed
  */
-function useConfig(array|string $config, ?string $key = null, mixed $default = null): mixed
+function config(array|string $config, ?string $key = null, mixed $default = null): mixed
 {
     if (is_string($config)) {
         $configPath = dirname(__FILE__, 2) . "/config/{$config}.php";
@@ -136,7 +132,7 @@ function useConfig(array|string $config, ?string $key = null, mixed $default = n
     return $config[$key] ?? $default ?? null;
 }
 
-function useFixture(string $name)
+function getFixture(string $name)
 {
     return Bladex\Fixtures::get($name);
 }

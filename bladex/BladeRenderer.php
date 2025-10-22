@@ -25,7 +25,7 @@ class BladeRenderer
     private function __construct()
     {
         $config = $this->getConfiguration();
-        $this->baseDir = useBaseDir();
+        $this->baseDir = baseDir();
 
         $this->viewsPath = $config['views_path'] ?? $this->baseDir . '/views';
         $this->cachePath = $config['cache_path'] ?? $this->baseDir . '/cache/blade';
@@ -167,6 +167,6 @@ class BladeRenderer
 
     private function getConfiguration(): array
     {
-        return useConfig('blade');
+        return config('blade');
     }
 }

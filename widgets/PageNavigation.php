@@ -28,6 +28,6 @@ class PageNavigation extends Widget
             return '';
         }
         $navData = $pagination->getNavigationData();
-        return useView('ui.pagination')->with('navData', $navData);
+        return view('ui.pagination')->with('navData', $navData);
     }
 }

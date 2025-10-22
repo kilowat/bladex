@@ -22,10 +22,10 @@ class HeaderMenu extends Widget
     {
         return Menu::new()
             ->wrap('nav', ['class' => 'header__menu'])
-            ->add(Link::to(useRoute('home'), 'Home'))
-            ->add(Link::to(useRoute('shop.section', ['section' => 'womens']), 'Women’s'))
-            ->add(Link::to(useRoute('shop.section', ['section' => 'mens']), 'Men’s'))
-            ->add(Link::to(useRoute('shop.index'), 'Shop'))
+            ->add(Link::to(getRoute('home'), 'Home'))
+            ->add(Link::to(getRoute('shop.section', ['section' => 'womens']), 'Women’s'))
+            ->add(Link::to(getRoute('shop.section', ['section' => 'mens']), 'Men’s'))
+            ->add(Link::to(getRoute('shop.index'), 'Shop'))
             ->submenu(
                 '<a href="#">Pages</a>',
                 Menu::new()
@@ -40,7 +40,7 @@ class HeaderMenu extends Widget
             ->setActive(function (Link $link) {
                 if (str_contains($link->url(), '#'))
                     return false;
-                return $link->url() == useCurrentRoute()->getUri();
+                return $link->url() == getCurrentRoute()->getUri();
             })
             ->render();
     }

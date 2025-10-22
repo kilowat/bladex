@@ -1,11 +1,6 @@
 @extends('layouts.default')
 
 @section('content')
-
-    <!-- Breadcrumb Begin -->
-    @widget('breadcrumbs')
-    <!-- Breadcrumb End -->
-
     <!-- Shop Section Begin -->
     <section class="shop spad">
         <div class="container">
