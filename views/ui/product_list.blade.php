@@ -27,4 +27,5 @@
             </div>
         @endforeach
     </div>
+    @widget('PageNavigation', ['pagination' => $pagination])
 </div>

@@ -9,12 +9,12 @@ class PageController extends BaseController
 {
     public function indexAction()
     {
-        return useView('pages.home');
+        return view('pages.home')->with( 'hideBreadcrumbs', true);
     }
 
     public function aboutAction()
     {
-        return useView('pages.about');
+        return view('pages.about');
     }
 
     public function defaultAction()

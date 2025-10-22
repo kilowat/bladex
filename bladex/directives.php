@@ -1,12 +1,12 @@
 <?php
 return [
     // Подключить CSS
-    'useCss' => function ($expression) {
-        return "<?php useCss($expression); ?>";
+    'addCss' => function ($expression) {
+        return "<?php addCss($expression); ?>";
     },
 
-    'useJs' => function ($expression) {
-        return "<?php useJs($expression); ?>";
+    'addJs' => function ($expression) {
+        return "<?php addJs($expression); ?>";
     },
 
     // Вывести все стили

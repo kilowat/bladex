@@ -11,7 +11,7 @@
             </a></li>
     </ul>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="{{ useAsset('assets/img/logo.png') }}" alt=""></a>
+        <a href="./index.html"><img src="{{ asset('assets/img/logo.png') }}" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__auth">

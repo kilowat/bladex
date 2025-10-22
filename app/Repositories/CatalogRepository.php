@@ -12,7 +12,7 @@ class CatalogRepository
         string $direction = 'asc',
         array $filter = []
     ) {
-        $products = useFixture('products');
+        $products = getFixture('products');
 
         return array_slice($products, $offset, $limit);
     }

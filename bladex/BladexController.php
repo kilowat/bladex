@@ -65,7 +65,7 @@ abstract class BladexController extends Controller
             $appError = AppError::tryFrom($firstError->getCode());
             $exceptionHandling = \Bitrix\Main\Config\Configuration::getValue('exception_handling');
             $viewError = !empty($exceptionHandling['debug']) && $appError == null ? $this->debugView : $appError->view();
-            $finalResponse = !$this->request->isJson() ? useView($viewError)->with('errors', $errors)->getResponse() : $response;
+            $finalResponse = !$this->request->isJson() ? view($viewError)->with('errors', $errors)->getResponse() : $response;
             $finalResponse->setStatus($finalResponse->getStatus() == 0 ? $appError?->status() ?? 500 : $finalResponse->getStatus());
             $finalResponse->send();
         }

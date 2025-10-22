@@ -14,6 +14,9 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/shop', [Controllers\ShopController::class, 'index'])
         ->name('shop.index');
 
+    $routes->get('/shop/{section}', [Controllers\ShopController::class, 'index'])
+        ->name('shop.section');
+
     $routes->get('{path}', [Controllers\PageController::class, 'default'])
         ->name('default')
         ->where('path', '.*');

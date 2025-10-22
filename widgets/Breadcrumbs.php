@@ -9,9 +9,9 @@ class Breadcrumbs extends Widget
     public function render(): View|string
     {
         $items = \Bladex\Breadcrumbs::generate(
-            useCurrentRoute()->getOptions()->getFullName(),
+            getCurrentRoute()->getOptions()->getFullName(),
         )->get();
 
-        return useView('ui.breadcrumbs')->with('items', $items);
+        return view('ui.breadcrumbs')->with('items', $items);
     }
 }

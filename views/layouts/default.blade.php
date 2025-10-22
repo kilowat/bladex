@@ -1,4 +1,4 @@
-@useCss([
+@addCss([
     'assets/css/bootstrap.min.css',
     'assets/css/font-awesome.min.css',
     'assets/css/elegant-icons.css',
@@ -8,7 +8,7 @@
     'assets/css/slicknav.min.css',
     'assets/css/style.css',
 ])
-@useJs([
+@addJs([
     'assets/js/jquery-3.3.1.min.js',
     'assets/js/bootstrap.min.js',
     'assets/js/jquery.magnific-popup.min.js',
@@ -47,6 +47,9 @@
     <!-- Header Section Begin -->
     @include('ui.header')
     <!-- Header Section End -->
+    @unless(!empty($hideBreadcrumbs) && $hideBreadcrumbs === true)
+        @widget('breadcrumbs')
+    @endunless
 
     @yield('content');
 

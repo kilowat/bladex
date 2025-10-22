@@ -1,11 +1,6 @@
 @extends('layouts.default')
 
 @section('content')
-
-    <!-- Breadcrumb Begin -->
-    @widget('breadcrumbs')
-    <!-- Breadcrumb End -->
-
     <!-- Shop Section Begin -->
     <section class="shop spad">
         <div class="container">
@@ -16,8 +11,7 @@
                         @include('ui.smartfilter')
                     </div>
                 </div>
-                @include('ui.product_list', ['items' => $products])
-                @widget('PageNavigation', ['pagination' => $pagination])
+                @include('ui.product_list', ['items' => $products, 'pagination' => $pagination])
             </div>
         </div>
     </section>
