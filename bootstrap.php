@@ -1,7 +1,7 @@
 <?php
 
 
-require_once __DIR__ . '/bladex/func.php';
+require_once __DIR__ . '/common/func.php';
 
 $composerJsonPath = __DIR__ . '/composer.json';
 $vendorDir = '/vendor';

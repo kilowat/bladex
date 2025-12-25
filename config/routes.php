@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'routes/web.php',
+    'routes/api.php',
 ];

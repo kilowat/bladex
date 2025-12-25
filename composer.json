@@ -12,10 +12,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Views\\": "views/",
-            "Controllers\\": "controllers/",
-            "Widgets\\": "widgets",
-            "Bladex\\": "bladex/"
+            "Common\\": "common/",
+            "Controllers\\": "controllers/"
         }
     },
     "config": {

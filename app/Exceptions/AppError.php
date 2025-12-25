@@ -28,14 +28,6 @@ enum AppError: string
             self::SERVER_ERROR => 'Internal server error.',
         };
     }
-    public function view(): string
-    {
-        return match ($this) {
-            self::NOT_FOUND => 'errors.404',
-            default => 'errors.default',
-        };
-    }
-
     public function shouldToLog()
     {
         return match ($this) {
