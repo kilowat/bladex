@@ -7,10 +7,6 @@ return function (RoutingConfigurator $routes) {
 
     $routes->get('/test', [Controllers\PageController::class, 'test'])
         ->name('test');
-    
-    $routes->get('/public', [App\Controllers\Public\PublicController::class, 'test'])
-        ->name('test');
-    
 
     $routes->get('{path}', [Controllers\PageController::class, 'default'])
         ->name('default')
